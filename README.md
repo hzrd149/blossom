@@ -1,21 +1,28 @@
-# 🌸 Blossom
+# 🌸 Blossom WIP
 
 Blobs stored simply on mediaservers
 
 ## What is it?
 
-Blossom is a spec of http endpoints for storing blobs on publicly accessible servers
+Blossom is a spec for a set of http endpoints that allows users to store blobs of data on publicly accessible servers
 
-## How dose it work?
+## What are blobs
 
 Blobs are packs of binary data addressed by their sha256 hash
+
+## How dose it work?
 
 Blossom Servers expose four endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`)
 - `PUT /upload`
-- `GET /list`
+  - `Authentication`: Signed nostr event
+  - Return a blob descriptor
+- `GET /list/<pubkey>`
+  - Returns an array of blob descriptors
+  - `Authentication` _(optional)_: Signed nostr event
 - `DELETE /<sha256>`
+  - `Authentication`: Signed nostr event
 
 ## Blob Descriptor
 
@@ -31,7 +38,9 @@ Servers may include additional fields in the descriptor like `magnet`, `infohash
 
 ## Nostr Identities
 
-Blossom uses nostr public / private keys for identities. Users are expected to sign "Client Authentication" events to prove their identity when uploading or deleting blobs
+Blossom uses nostr public / private keys for identities. Users are expected to sign authorization events to prove their identity when interacting with servers
+
+See [Nostr](./Nostr.md)
 
 ## Server Implementation
 
@@ -39,4 +48,4 @@ See [Server](./Server.md)
 
 ## Client Implementation
 
-Example Implementation: [blossom-client](https://github.com/hzrd149/blossom-client) (TypeScript)
+See [Client](./Client.md)
