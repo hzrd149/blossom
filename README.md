@@ -10,7 +10,7 @@ Blossom is a spec for a set of http endpoints that allows users to store blobs o
 
 Blobs are packs of binary data addressed by their sha256 hash
 
-## How dose it work?
+## How doess it work?
 
 Blossom Servers expose four endpoints for managing blobs
 
