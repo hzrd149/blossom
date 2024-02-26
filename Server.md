@@ -22,16 +22,17 @@ Example event:
 
 ```json
 {
-  "id": "8ecbdcdd5329200105524a14287913881b39d1409d8b90ccdb4b43f8f0fc9d0c",
-  "pubkey": "9f0cc17023b2cf509e0f1d305793d20e7c72276928fd9bf85536887ac570a280",
+  "id": "65c72db0c3b82ffcb395589d01f3e2849c28753e9e7156ceb88e5dd937ca845f",
+  "pubkey": "6ea2ab6f206844b1fe48bd8a7eb22ed6e4114a5b2a5252700a729a88142b2bc3",
   "kind": 24242,
-  "content": "Get Blobs",
-  "created_at": 1708771227,
+	"content": "Upload bitcoin.pdf",
+  "created_at": 1708773959,
   "tags": [
-    ["t", "get"],
-    ["expiration", "1708857540"]
+    ["t", "upload"],
+    ["size", "184292"],
+    ["expiration", "1708858680"]
   ],
-  "sig": "30c531600ea076b5afb3cce634cc30072af051aa1d2fd3e22f4b4d3a3300f8ce00a8e7668c45c79d946f3561a9ca66755458823222e2f7b24887f8318a814718"
+  "sig": "df099ecaeadb7ebcd7ec8247eb57eb6720d39f64a024be3ef1ed9b5d51087b0e866bd08fd317d5167f9bdb9cdae4e593539b86678c4d922db17d0463e0f9e0e3"
 }
 ```
 
@@ -53,9 +54,13 @@ Authorization: Nostr eyJpZCI6IjhlY2JkY2RkNTMyOTIwMDEwNTUyNGExNDI4NzkxMzg4MWIzOWQ
 
 ## Endpoints
 
+Servers must make all endpoints avaliable at the root path. This allows users to easily talk to server interchangeably
+
+Servers must repond with a stringified JSON object with a `message` field for all errors
+
 ### GET /sha256 - Get Blob
 
-The `GET /<sha256>` endpoint should return the contents of the blob with the `Content-Type` header set to the approperate MIME type
+The `GET /<sha256>` endpoint must return the contents of the blob with the `Content-Type` header set to the approperate MIME type
 
 The endpoint must accept an optional file extension in the URL. ie. `.pdf`, `.png`, etc
 
@@ -89,7 +94,7 @@ Example Authorization event:
 
 The `/list/<pubkey>` endpoint must return a JSON array of "blob descriptors" that where uploaded by the specified pubkey
 
-The endpoint should also support a `since` and `until` query parameter to filter the returned "blob descriptors" by the `created` field
+The endpoint must also support a `since` and `until` query parameter to filter the returned "blob descriptors" by the `created` field
 
 #### List Authorization (optional)
 
@@ -117,9 +122,9 @@ Example Authorization event:
 
 ### PUT /upload - Upload Blob
 
-The `PUT /upload` endpoint ....
+The `PUT /upload` endpoint ...
 
-Servers may reject an upload for any reason and must respond with the approperate HTTP `4xx` status code and the body as a human readable reason for the rejection
+Servers may reject an upload for any reason and must respond with the approperate HTTP `4xx` status code and an erorr message explaining the reason for the rejection
 
 #### Upload Authorization (required)
 
@@ -151,7 +156,7 @@ Example Authorization event:
 
 Servers must accept `DELETE` requests to the `/<sha156>` endpoint
 
-Servers may reject a delete request for any reason and must respond with the aproperate HTTP `4xx` status code and a human readable reason for the rejection
+Servers may reject a delete request for any reason and must respond with the aproperate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
 #### Delete Authorization (required)
 
