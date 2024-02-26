@@ -60,7 +60,7 @@ Servers must repond with a stringified JSON object with a `message` field for al
 
 ### GET /sha256 - Get Blob
 
-The `GET /<sha256>` endpoint must return the contents of the blob with the `Content-Type` header set to the approperate MIME type
+The `GET /<sha256>` endpoint must return the contents of the blob with the `Content-Type` header set to the appropriate MIME type
 
 The endpoint must accept an optional file extension in the URL. ie. `.pdf`, `.png`, etc
 
@@ -72,7 +72,7 @@ In this case the server must perform additional checks on the authorization even
 
 1. The `t` tag must be set to `get`
 
-If the client did not send an `Authorization` header the server must respond with the approperate HTTP status code `401` (Unauthorized)
+If the client did not send an `Authorization` header the server must respond with the appropriate HTTP status code `401` (Unauthorized)
 
 Example Authorization event:
 ```json
@@ -124,7 +124,7 @@ Example Authorization event:
 
 The `PUT /upload` endpoint ...
 
-Servers may reject an upload for any reason and must respond with the approperate HTTP `4xx` status code and an erorr message explaining the reason for the rejection
+Servers may reject an upload for any reason and must respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
 #### Upload Authorization (required)
 
