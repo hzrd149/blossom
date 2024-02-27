@@ -1,10 +1,12 @@
 # Blossom nostr integration
 
-Blossom uses nostr for public / private key identities. Users are expected to sign "Client Authentication" events to prove their identity when uploading or deleting blobs
+Blossom uses nostr for public / private key identities. Users are expected to sign authentication events to prove their identity when uploading or deleting blobs
+
+See [Authorization events](./Server.md#authorization-events)
 
 ## User Server Discovery
 
-Users may publish a kind `10063` event with a list of `r` tags indicating where others should look to find their published blobs
+Users should publish a kind `10063` event with a list of `r` tags indicating servers that others users should use when getting their blobs
 
 ### Example
 
