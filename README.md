@@ -16,13 +16,13 @@ Blossom Servers expose four endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`)
 - `PUT /upload`
-  - `Authentication`: Signed nostr event
+  - `Authentication`: Signed [nostr event](./Server.md#upload-authorization-required)
   - Return a blob descriptor
 - `GET /list/<pubkey>`
   - Returns an array of blob descriptors
-  - `Authentication` _(optional)_: Signed nostr event
+  - `Authentication` _(optional)_: Signed [nostr event](./Server.md#list-authorization-optional)
 - `DELETE /<sha256>`
-  - `Authentication`: Signed nostr event
+  - `Authentication`: Signed [nostr event](./Server.md#delete-authorization-required)
 
 ## Blob Descriptor
 
