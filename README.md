@@ -4,7 +4,7 @@ Blobs stored simply on mediaservers
 
 ## What is it?
 
-Blossom is a spec for a set of http endpoints that allows users to store blobs of data on publicly accessible servers
+Blossom is a spec for a set of HTTP endpoints that allow users to store blobs of data on publicly accessible servers
 
 ## What are blobs
 
