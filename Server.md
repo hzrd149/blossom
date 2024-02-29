@@ -10,11 +10,11 @@ Servers MUST set `Access-Control-Allow-Origin: *`, `Access-Control-Allow-Headers
 
 Authorization events are used to identify the users pubkey with the server
 
-Authorization events must generic and must NOT be scoped to specific servers. This allows pubkeys to sign a single event and interact the same way with multiple servers.
+Authorization events must be generic and must NOT be scoped to specific servers. This allows pubkeys to sign a single event and interact the same way with multiple servers.
 
 Events must be kind `24242` and have a `t` tag with a verb of `get`, `upload`, `list`, or `delete`
 
-Events must have the `content` set to a human readable string explaining to the user what the events inteded use is. for example `Upload Blob`, `Delete dog-picture.png`, `List Images`, etc
+Events must have the `content` set to a human readable string explaining to the user what the events inteded use is. For example `Upload Blob`, `Delete dog-picture.png`, `List Images`, etc
 
 All events must have a [NIP-40](https://github.com/nostr-protocol/nips/blob/master/40.md) `expiration` tag set to a unix timestamp at which the event should be considered expired.
 
@@ -58,7 +58,7 @@ All endpoints MUST be served from the root path (eg. `https://cdn.example.com/up
 
 Servers MUST repond with `Content-Type: application/json` and a JSON object containing `message` for all error responses
 
-The `message` field MUST be human readable and should explain the reason for the error. Optinally servers may include other fields for the client with more information about the error.
+The `message` field MUST be human readable and should explain the reason for the error. Optionally servers may include other fields for the client with more information about the error.
 
 ### Example Error response
 
@@ -80,7 +80,7 @@ The endpoint MUST accept an optional file extension in the URL. ie. `.pdf`, `.pn
 
 #### Get Authorization (optional)
 
-The server may optionally require authorization when fetching blobs from the `GET /<sha156>` endpoint
+The server may optionally require authorization when fetching blobs from the `GET /<sha256>` endpoint
 
 In this case the server MUST perform additional checks on the authorization event
 
@@ -107,11 +107,11 @@ Example Authorization event:
 
 ### PUT /upload - Upload Blob
 
-The `PUT /upload` endpoint should expect the `Content-Type` header of the request to be set to the MIME type of the blob. and the body of the request to the raw data of the blob
+The `PUT /upload` endpoint should expect the `Content-Type` header of the request to be set to the MIME type of the blob and the body of the request to the raw data of the blob.
 
-The endpoint MUST return a [Blob Descriptor](./README.md#blob-descriptor) if the upload was successful. or an error object if not
+The endpoint MUST return a [Blob Descriptor](./README.md#blob-descriptor) if the upload was successful or an error object if not.
 
-Servers may reject an upload for any reason and should respond with the approperate HTTP `4xx` status code and an erorr message explaining the reason for the rejection
+Servers may reject an upload for any reason and should respond with the appropiate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
 #### Upload Authorization (required)
 
@@ -173,7 +173,7 @@ Example Authorization event:
 
 ### DELETE /sha256 - Delete Blob
 
-Servers MUST accept `DELETE` requests to the `/<sha156>` endpoint
+Servers MUST accept `DELETE` requests to the `/<sha256>` endpoint
 
 Servers may reject a delete request for any reason and should respond with the aproperate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
