@@ -111,7 +111,7 @@ The `PUT /upload` endpoint should expect the `Content-Type` header of the reques
 
 The endpoint MUST return a [Blob Descriptor](./README.md#blob-descriptor) if the upload was successful or an error object if not.
 
-Servers may reject an upload for any reason and should respond with the appropiate HTTP `4xx` status code and an error message explaining the reason for the rejection
+Servers may reject an upload for any reason and should respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
 #### Upload Authorization (required)
 
