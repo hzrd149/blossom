@@ -105,6 +105,12 @@ Example Authorization event:
 }
 ```
 
+### HEAD /sha256 - Has Blob
+
+The `HEAD /<sha256>` endpoint MUST respond with either a `200` or `404` status code
+
+The endpoint MUST accept an optional file extension in the URL similar to the `GET /<sha256>` endpoint. ie. `.pdf`, `.png`, etc
+
 ### PUT /upload - Upload Blob
 
 The `PUT /upload` endpoint should expect the `Content-Type` header of the request to be set to the MIME type of the blob and the body of the request to the raw data of the blob.

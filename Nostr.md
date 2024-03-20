@@ -6,7 +6,7 @@ See [Authorization events](./Server.md#authorization-events)
 
 ## User Server Discovery
 
-Users should publish a kind `10063` event with a list of `r` tags indicating servers that others users should use when getting their blobs
+Users should publish a kind `10063` event with a list of ordered `r` tags indicating servers that others users should use when getting their blobs
 
 ### Example
 

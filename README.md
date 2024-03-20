@@ -15,6 +15,7 @@ Blobs are packs of binary data addressed by their sha256 hash
 Blossom Servers expose four endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`)
+- `HEAD /<sha256>` (optional file `.ext`)
 - `PUT /upload`
   - `Authentication`: Signed [nostr event](./Server.md#upload-authorization-required)
   - Return a blob descriptor
