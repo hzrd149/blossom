@@ -50,3 +50,7 @@ See [Server](./Server.md)
 ## Client Implementation
 
 See [Client](./Client.md)
+
+## License
+
+Public domain.
