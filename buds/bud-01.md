@@ -1,14 +1,20 @@
-# Blossom Server Implementation
+# BUD-01
+
+## Core endpoint outline
+
+`draft` `mandatory`
+
+Blossom uses [nostr](https://github.com/nostr-protocol/nostr) public / private keys for identities. Users are expected to sign authorization events to prove their identity when interacting with servers
 
 _All pubkeys MUST be in hex format_
 
-## CORS
+## Cross origin headers
 
-Servers MUST set `Access-Control-Allow-Origin: *`, `Access-Control-Allow-Headers: Authorization,*` and `Access-Control-Allow-Methods: GET, PUT, DELETE` headers on all endpoint to ensure compatibility with apps hosted on other domains
+Servers MUST set the `Access-Control-Allow-Origin: *`, `Access-Control-Allow-Headers: Authorization,*` and `Access-Control-Allow-Methods: GET, PUT, DELETE` headers on all endpoints to ensure compatibility with apps hosted on other domains
 
 ## Authorization events
 
-Authorization events are used to identify the users pubkey with the server
+Authorization events are used to identify the users to the server
 
 Authorization events must be generic and must NOT be scoped to specific servers. This allows pubkeys to sign a single event and interact the same way with multiple servers.
 
@@ -52,6 +58,18 @@ Example HTTP Authorization header:
 Authorization: Nostr eyJpZCI6IjhlY2JkY2RkNTMyOTIwMDEwNTUyNGExNDI4NzkxMzg4MWIzOWQxNDA5ZDhiOTBjY2RiNGI0M2Y4ZjBmYzlkMGMiLCJwdWJrZXkiOiI5ZjBjYzE3MDIzYjJjZjUwOWUwZjFkMzA1NzkzZDIwZTdjNzIyNzY5MjhmZDliZjg1NTM2ODg3YWM1NzBhMjgwIiwiY3JlYXRlZF9hdCI6MTcwODc3MTIyNywia2luZCI6MjQyNDIsInRhZ3MiOltbInQiLCJnZXQiXSxbImV4cGlyYXRpb24iLCIxNzA4ODU3NTQwIl1dLCJjb250ZW50IjoiR2V0IEJsb2JzIiwic2lnIjoiMDJmMGQyYWIyM2IwNDQ0NjI4NGIwNzFhOTVjOThjNjE2YjVlOGM3NWFmMDY2N2Y5NmNlMmIzMWM1M2UwN2I0MjFmOGVmYWRhYzZkOTBiYTc1NTFlMzA4NWJhN2M0ZjU2NzRmZWJkMTVlYjQ4NTFjZTM5MGI4MzI4MjJiNDcwZDIifQ==
 ```
 
+## Blob Descriptor
+
+A blob descriptor is a JSON object containing `url`, `sha256`, `size`, `type`, and `created` fields
+
+- `url` A public facing url this blob can retrieved from
+- `sha256` The sha256 hash of the blob
+- `size` The size of the blob in bytes
+- `type` (optional) The MIME type of the blob
+- `created` The unix timestamp of when the blob was uploaded to the server
+
+Servers may include additional fields in the descriptor like `magnet`, `infohash`, or `ipfs` depending on other protocols they support
+
 ## Endpoints
 
 All endpoints MUST be served from the root path (eg. `https://cdn.example.com/upload`, etc). This allows clients to talk to servers interchangeably when uploading or fetching blobs
@@ -68,6 +86,8 @@ content-type: application/json; charset=utf-8
 content-length: 32
 access-control-allow-origin: *
 access-control-expose-headers: *
+access-control-allow-headers: authorization,*
+access-control-allow-methods: get, put, delete
 
 {"message":"Missing Auth event"}
 ```
@@ -117,14 +137,14 @@ The `PUT /upload` endpoint should expect the `Content-Type` header of the reques
 
 The endpoint MUST return a [Blob Descriptor](./README.md#blob-descriptor) if the upload was successful or an error object if not.
 
-Servers may reject an upload for any reason and should respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
+Servers MAY reject an upload for any reason and should respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
 #### Upload Authorization (required)
 
-Servers must accept an authorization event when uploading blobs and should perform additional checks
+Servers MUST accept an authorization event when uploading blobs and should perform additional checks
 
-1. The `t` tag must be set to `upload`
-2. A `size` tag must be present and set to the total size of the uploaded blob
+1. The `t` tag MUST be set to `upload`
+2. A `size` tag MUST be present and set to the total size of the uploaded blob
 
 Example Authorization event:
 
@@ -146,11 +166,11 @@ Example Authorization event:
 
 ### GET /list/pubkey - List Blobs
 
-The `/list/<pubkey>` endpoint must return a JSON array of [Blob Descriptor](./README.md#blob-descriptor) that where uploaded by the specified pubkey
+The `/list/<pubkey>` endpoint MUST return a JSON array of [Blob Descriptor](#blob-descriptor) that where uploaded by the specified pubkey
 
-The endpoint must support a `since` and `until` query parameter to limit the returned blob descriptors by the `created` field
+The endpoint MUST support a `since` and `until` query parameter to limit the returned blob descriptors by the `created` field
 
-Servers may reject an upload for any reason and MUST respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
+Servers may reject a list for any reason and MUST respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
 #### List Authorization (optional)
 
@@ -185,7 +205,7 @@ Servers may reject a delete request for any reason and should respond with the a
 
 #### Delete Authorization (required)
 
-Servers must accept an authorization event when deleting blobs
+Servers MUST accept an authorization event when deleting blobs
 
 Servers should perform additional checks on the authorization event
 
