@@ -6,21 +6,21 @@ See [Authorization events](./Server.md#authorization-events)
 
 ## User Server Discovery
 
-Users should publish a kind `10063` event with a list of ordered `r` tags indicating servers that others users should use when getting their blobs
+Users should publish a kind `10063` event with a list of ordered `server` tags indicating servers that others users should use when getting their blobs
 
 ### Example
 
 ```json
 {
-  "id": "90718dd2f481ad1d9dd72eab2b210d1b3d03231f114b0825bf967465748934f0",
-  "pubkey": "7d917f22b84356a3c4e5ef7ec6d4464fb1dc3258cbf58c58d8bf079580c12c91",
+  "id": "e4bee088334cb5d38cff1616e964369c37b6081be997962ab289d6c671975d71",
+  "pubkey": "781208004e09102d7da3b7345e64fd193cd1bc3fce8fdae6008d77f9cabcd036",
   "content": "",
   "kind": 10063,
   "created_at": 1708774162,
   "tags": [
-    ["r", "https://cdn.self.hosted"],
-    ["r", "https://cdn.satellite.earth"]
+    ["server", "https://cdn.self.hosted"],
+    ["server", "https://cdn.satellite.earth"]
   ],
-  "sig": "805a0c00cdad7ae25de70740751b8e5985bec24bb6aead8c65e0cc33d6205dd5a06689b566e62589885ad86bfb55c5c7dfb5a9ce6ddb29cf04507fa76e485040"
+  "sig": "cc5efa74f59e80622c77cacf4dd62076bcb7581b45e9acff471e7963a1f4d8b3406adab5ee1ac9673487480e57d20e523428e60ffcc7e7a904ac882cfccfc653"
 }
 ```
