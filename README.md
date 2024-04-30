@@ -1,4 +1,4 @@
-# 🌸 Blossom  - Blobs stored simply on mediaservers
+# 🌸 Blossom - Blobs stored simply on mediaservers
 
 ## What is it?
 

@@ -8,7 +8,9 @@
 
 A server MAY expose a `/process` endpoint for the purpose of processing and/or optimizing any blob the user uploads
 
-The endpoint MUST accept the `Content-Type` of `multipart/form-data` with the field `blob` containing the raw binary of the blob being upload
+Just like the `/upload` endpoint the `/process` endpoint MUST accept binary data in the body of the request and MAY use the `Content-Type` header to get the MIME type of the data
+
+The endpoint MUST also accept the `Content-Type` of `multipart/form-data` with the field `blob` containing the raw binary of the blob being upload
 
 Similar to the `/upload` endpoint the server MUST respond with a [Blob Descriptor](./bud-01.md#blob-descriptor)
 

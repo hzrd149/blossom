@@ -133,9 +133,11 @@ The endpoint MUST accept an optional file extension in the URL similar to the `G
 
 ### PUT /upload - Upload Blob
 
-The `PUT /upload` endpoint should expect the `Content-Type` header of the request to be set to the MIME type of the blob and the body of the request to the raw data of the blob.
+The `PUT /upload` endpoint MUST accept binary data in the body of the request and MAY use the `Content-Type` header to get the MIME type of the data
 
-The endpoint MUST return a [Blob Descriptor](./README.md#blob-descriptor) if the upload was successful or an error object if not.
+The endpoint MUST NOT modify the blob in any way and should return the exact same sha256 that was uploaded. This is critical to allow users to re-upload their blobs to new servers
+
+The endpoint MUST return a [Blob Descriptor](./README.md#blob-descriptor) if the upload was successful or an error object if not
 
 Servers MAY reject an upload for any reason and should respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
