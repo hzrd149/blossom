@@ -25,7 +25,7 @@ Blossom Servers expose four endpoints for managing blobs
 
 ## Protocol specification
 
-BUDs stand for Blossom Upgrade Possibilities.
+BUDs stand for Blossom Upgrade Documents.
 
 See the [BUDs](./buds) folder and specifically [BUD-01](./buds/bud-01.md) for a detailed explanation of the endpoints
 
