@@ -18,27 +18,30 @@ Authorization events are used to identify the users to the server
 
 Authorization events must be generic and must NOT be scoped to specific servers. This allows pubkeys to sign a single event and interact the same way with multiple servers.
 
-Events must be kind `24242` and have a `t` tag with a verb of `get`, `upload`, `list`, or `delete`
+Events MUST be kind `24242` and have a `t` tag with a verb of `get`, `upload`, `list`, or `delete`
 
-Events must have the `content` set to a human readable string explaining to the user what the events inteded use is. For example `Upload Blob`, `Delete dog-picture.png`, `List Images`, etc
+Events MUST contain a `size` set to the blob size in bytes and a `name` tag set to the original filename
 
-All events must have a [NIP-40](https://github.com/nostr-protocol/nips/blob/master/40.md) `expiration` tag set to a unix timestamp at which the event should be considered expired.
+Events MUST have the `content` set to a human readable string explaining to the user what the events inteded use is. For example `Upload Blob`, `Delete dog-picture.png`, `List Images`, etc
+
+All events MUST have a [NIP-40](https://github.com/nostr-protocol/nips/blob/master/40.md) `expiration` tag set to a unix timestamp at which the event should be considered expired.
 
 Example event:
 
 ```json
 {
-  "id": "65c72db0c3b82ffcb395589d01f3e2849c28753e9e7156ceb88e5dd937ca845f",
-  "pubkey": "6ea2ab6f206844b1fe48bd8a7eb22ed6e4114a5b2a5252700a729a88142b2bc3",
+  "id": "2f770debbc651f5b0d13b5b5459ccc271e861d9bfd010add894435277b6719de",
+  "pubkey": "4e3b5ad6d831b3598b03ca38c959bfa56ed63b203052c5a99941701cda7a4d77",
   "kind": 24242,
   "content": "Upload bitcoin.pdf",
   "created_at": 1708773959,
   "tags": [
     ["t", "upload"],
     ["size", "184292"],
+    ["name", "bitcoin.pdf"],
     ["expiration", "1708858680"]
   ],
-  "sig": "df099ecaeadb7ebcd7ec8247eb57eb6720d39f64a024be3ef1ed9b5d51087b0e866bd08fd317d5167f9bdb9cdae4e593539b86678c4d922db17d0463e0f9e0e3"
+  "sig": "44f5dbe16f7db8bce5c7709a616c772a3ac950e42ab8b0df99a9d05605f87c335aec18078543627c24c7ee1edb3a6356705d4137eff71af880c24be8388a6525"
 }
 ```
 
