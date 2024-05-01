@@ -98,6 +98,9 @@ The `GET /<sha256>` endpoint MUST return the contents of the blob with the `Cont
 
 The endpoint MUST accept an optional file extension in the URL. ie. `.pdf`, `.png`, etc
 
+If the endpoints returns a 301 or 302 redirect it MUST redirect to a URL containing the same sha256 hash as requested blob.
+This ensures that if a user was to copy or reuse the redirect URL it would still contain the original sha256 hash
+
 #### Get Authorization (optional)
 
 The server may optionally require authorization when fetching blobs from the `GET /<sha256>` endpoint
