@@ -20,8 +20,6 @@ Authorization events must be generic and must NOT be scoped to specific servers.
 
 Events MUST be kind `24242` and have a `t` tag with a verb of `get`, `upload`, `list`, or `delete`
 
-Events MUST contain a `size` set to the blob size in bytes and a `name` tag set to the original filename
-
 Events MUST have the `content` set to a human readable string explaining to the user what the events inteded use is. For example `Upload Blob`, `Delete dog-picture.png`, `List Images`, etc
 
 All events MUST have a [NIP-40](https://github.com/nostr-protocol/nips/blob/master/40.md) `expiration` tag set to a unix timestamp at which the event should be considered expired.
@@ -30,18 +28,17 @@ Example event:
 
 ```json
 {
-  "id": "2f770debbc651f5b0d13b5b5459ccc271e861d9bfd010add894435277b6719de",
-  "pubkey": "4e3b5ad6d831b3598b03ca38c959bfa56ed63b203052c5a99941701cda7a4d77",
+  "id": "a2d97d0c8b19d6d91b8bd3c36feeb69f176861f9443ba575cbabf9941d4200bf",
+  "pubkey": "2db760eae90b5764f3503e0c5660a1a74be9ded5eb8b493e81f65c28a088e9fe",
   "kind": 24242,
   "content": "Upload bitcoin.pdf",
   "created_at": 1708773959,
   "tags": [
     ["t", "upload"],
     ["size", "184292"],
-    ["name", "bitcoin.pdf"],
     ["expiration", "1708858680"]
   ],
-  "sig": "44f5dbe16f7db8bce5c7709a616c772a3ac950e42ab8b0df99a9d05605f87c335aec18078543627c24c7ee1edb3a6356705d4137eff71af880c24be8388a6525"
+  "sig": "1442c68d5a661d821e9a4b91999b433a1d11557eeb6255496c6875c00d02497deb03dcb54597f210582cd62b621df21b080a0eadbd66ae703264b5929b160d05"
 }
 ```
 
@@ -149,7 +146,7 @@ Servers MAY reject an upload for any reason and should respond with the appropri
 Servers MUST accept an authorization event when uploading blobs and should perform additional checks
 
 1. The `t` tag MUST be set to `upload`
-2. A `size` tag MUST be present and set to the total size of the uploaded blob
+2. A `size` tag MUST be present and set to the total size of the uploaded blob in bytes
 
 Example Authorization event:
 
