@@ -23,9 +23,9 @@ Blossom Servers expose four endpoints for managing blobs
 - `DELETE /<sha256>`
   - `Authentication`: Signed [nostr event](./Server.md#delete-authorization-required)
 
-## Protocol specification
+## Protocol specification (BUDs)
 
-BUDs stand for Blossom Upgrade Documents.
+BUDs stand for **Blossom Upgrade Documents**.
 
 See the [BUDs](./buds) folder and specifically [BUD-01](./buds/bud-01.md) for a detailed explanation of the endpoints
 
