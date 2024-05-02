@@ -60,13 +60,13 @@ Authorization: Nostr eyJpZCI6IjhlY2JkY2RkNTMyOTIwMDEwNTUyNGExNDI4NzkxMzg4MWIzOWQ
 
 ## Blob Descriptor
 
-A blob descriptor is a JSON object containing `url`, `sha256`, `size`, `type`, and `created` fields
+A blob descriptor is a JSON object containing `url`, `sha256`, `size`, `type`, and `uploaded` fields
 
 - `url` A public facing url this blob can retrieved from
 - `sha256` The sha256 hash of the blob
 - `size` The size of the blob in bytes
 - `type` (optional) The MIME type of the blob
-- `created` The unix timestamp of when the blob was uploaded to the server
+- `uploaded` The unix timestamp of when the blob was uploaded to the server
 
 Servers may include additional fields in the descriptor like `magnet`, `infohash`, or `ipfs` depending on other protocols they support
 
@@ -173,7 +173,7 @@ Example Authorization event:
 
 The `/list/<pubkey>` endpoint MUST return a JSON array of [Blob Descriptor](#blob-descriptor) that where uploaded by the specified pubkey
 
-The endpoint MUST support a `since` and `until` query parameter to limit the returned blob descriptors by the `created` field
+The endpoint MUST support a `since` and `until` query parameter to limit the returned blobs by thier `uploaded` date
 
 Servers may reject a list for any reason and MUST respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
