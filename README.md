@@ -1,6 +1,4 @@
-# 🌸 Blossom WIP
-
-Blobs stored simply on mediaservers
+# 🌸 Blossom - Blobs stored simply on mediaservers
 
 ## What is it?
 
@@ -25,31 +23,11 @@ Blossom Servers expose four endpoints for managing blobs
 - `DELETE /<sha256>`
   - `Authentication`: Signed [nostr event](./Server.md#delete-authorization-required)
 
-## Blob Descriptor
+## Protocol specification (BUDs)
 
-A blob descriptor is a JSON object containing `url`, `sha256`, `size`, `type`, and `created` fields
+BUDs stand for **Blossom Upgrade Documents**.
 
-- `url` A public facing url this blob can retrieved from
-- `sha256` The sha256 hash of the blob
-- `size` The size of the blob in bytes
-- `type` (optional) The MIME type of the blob
-- `created` The unix timestamp of when the blob was uploaded to the server
-
-Servers may include additional fields in the descriptor like `magnet`, `infohash`, or `ipfs` depending on other protocols they support
-
-## Nostr Identities
-
-Blossom uses nostr public / private keys for identities. Users are expected to sign authorization events to prove their identity when interacting with servers
-
-See [Nostr](./Nostr.md)
-
-## Server Implementation
-
-See [Server](./Server.md)
-
-## Client Implementation
-
-See [Client](./Client.md)
+See the [BUDs](./buds) folder and specifically [BUD-01](./buds/bud-01.md) for a detailed explanation of the endpoints
 
 ## License
 

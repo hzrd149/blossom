@@ -1,29 +1,35 @@
-# Blossom Server Implementation
+# BUD-01
+
+## Core endpoint outline
+
+`draft` `mandatory`
+
+Blossom uses [nostr](https://github.com/nostr-protocol/nostr) public / private keys for identities. Users are expected to sign authorization events to prove their identity when interacting with servers
 
 _All pubkeys MUST be in hex format_
 
-## CORS
+## Cross origin headers
 
-Servers MUST set `Access-Control-Allow-Origin: *`, `Access-Control-Allow-Headers: Authorization,*` and `Access-Control-Allow-Methods: GET, PUT, DELETE` headers on all endpoint to ensure compatibility with apps hosted on other domains
+Servers MUST set the `Access-Control-Allow-Origin: *`, `Access-Control-Allow-Headers: Authorization,*` and `Access-Control-Allow-Methods: GET, PUT, DELETE` headers on all endpoints to ensure compatibility with apps hosted on other domains
 
 ## Authorization events
 
-Authorization events are used to identify the users pubkey with the server
+Authorization events are used to identify the users to the server
 
 Authorization events must be generic and must NOT be scoped to specific servers. This allows pubkeys to sign a single event and interact the same way with multiple servers.
 
-Events must be kind `24242` and have a `t` tag with a verb of `get`, `upload`, `list`, or `delete`
+Events MUST be kind `24242` and have a `t` tag with a verb of `get`, `upload`, `list`, or `delete`
 
-Events must have the `content` set to a human readable string explaining to the user what the events inteded use is. For example `Upload Blob`, `Delete dog-picture.png`, `List Images`, etc
+Events MUST have the `content` set to a human readable string explaining to the user what the events inteded use is. For example `Upload Blob`, `Delete dog-picture.png`, `List Images`, etc
 
-All events must have a [NIP-40](https://github.com/nostr-protocol/nips/blob/master/40.md) `expiration` tag set to a unix timestamp at which the event should be considered expired.
+All events MUST have a [NIP-40](https://github.com/nostr-protocol/nips/blob/master/40.md) `expiration` tag set to a unix timestamp at which the event should be considered expired.
 
 Example event:
 
 ```json
 {
-  "id": "65c72db0c3b82ffcb395589d01f3e2849c28753e9e7156ceb88e5dd937ca845f",
-  "pubkey": "6ea2ab6f206844b1fe48bd8a7eb22ed6e4114a5b2a5252700a729a88142b2bc3",
+  "id": "a2d97d0c8b19d6d91b8bd3c36feeb69f176861f9443ba575cbabf9941d4200bf",
+  "pubkey": "2db760eae90b5764f3503e0c5660a1a74be9ded5eb8b493e81f65c28a088e9fe",
   "kind": 24242,
   "content": "Upload bitcoin.pdf",
   "created_at": 1708773959,
@@ -32,7 +38,7 @@ Example event:
     ["size", "184292"],
     ["expiration", "1708858680"]
   ],
-  "sig": "df099ecaeadb7ebcd7ec8247eb57eb6720d39f64a024be3ef1ed9b5d51087b0e866bd08fd317d5167f9bdb9cdae4e593539b86678c4d922db17d0463e0f9e0e3"
+  "sig": "1442c68d5a661d821e9a4b91999b433a1d11557eeb6255496c6875c00d02497deb03dcb54597f210582cd62b621df21b080a0eadbd66ae703264b5929b160d05"
 }
 ```
 
@@ -52,6 +58,18 @@ Example HTTP Authorization header:
 Authorization: Nostr eyJpZCI6IjhlY2JkY2RkNTMyOTIwMDEwNTUyNGExNDI4NzkxMzg4MWIzOWQxNDA5ZDhiOTBjY2RiNGI0M2Y4ZjBmYzlkMGMiLCJwdWJrZXkiOiI5ZjBjYzE3MDIzYjJjZjUwOWUwZjFkMzA1NzkzZDIwZTdjNzIyNzY5MjhmZDliZjg1NTM2ODg3YWM1NzBhMjgwIiwiY3JlYXRlZF9hdCI6MTcwODc3MTIyNywia2luZCI6MjQyNDIsInRhZ3MiOltbInQiLCJnZXQiXSxbImV4cGlyYXRpb24iLCIxNzA4ODU3NTQwIl1dLCJjb250ZW50IjoiR2V0IEJsb2JzIiwic2lnIjoiMDJmMGQyYWIyM2IwNDQ0NjI4NGIwNzFhOTVjOThjNjE2YjVlOGM3NWFmMDY2N2Y5NmNlMmIzMWM1M2UwN2I0MjFmOGVmYWRhYzZkOTBiYTc1NTFlMzA4NWJhN2M0ZjU2NzRmZWJkMTVlYjQ4NTFjZTM5MGI4MzI4MjJiNDcwZDIifQ==
 ```
 
+## Blob Descriptor
+
+A blob descriptor is a JSON object containing `url`, `sha256`, `size`, `type`, and `uploaded` fields
+
+- `url` A public facing url this blob can retrieved from
+- `sha256` The sha256 hash of the blob
+- `size` The size of the blob in bytes
+- `type` (optional) The MIME type of the blob
+- `uploaded` The unix timestamp of when the blob was uploaded to the server
+
+Servers may include additional fields in the descriptor like `magnet`, `infohash`, or `ipfs` depending on other protocols they support
+
 ## Endpoints
 
 All endpoints MUST be served from the root path (eg. `https://cdn.example.com/upload`, etc). This allows clients to talk to servers interchangeably when uploading or fetching blobs
@@ -68,6 +86,8 @@ content-type: application/json; charset=utf-8
 content-length: 32
 access-control-allow-origin: *
 access-control-expose-headers: *
+access-control-allow-headers: authorization,*
+access-control-allow-methods: get, put, delete
 
 {"message":"Missing Auth event"}
 ```
@@ -77,6 +97,9 @@ access-control-expose-headers: *
 The `GET /<sha256>` endpoint MUST return the contents of the blob with the `Content-Type` header set to the appropriate MIME type
 
 The endpoint MUST accept an optional file extension in the URL. ie. `.pdf`, `.png`, etc
+
+If the endpoints returns a 301 or 302 redirect it MUST redirect to a URL containing the same sha256 hash as requested blob.
+This ensures that if a user was to copy or reuse the redirect URL it would still contain the original sha256 hash
 
 #### Get Authorization (optional)
 
@@ -113,18 +136,20 @@ The endpoint MUST accept an optional file extension in the URL similar to the `G
 
 ### PUT /upload - Upload Blob
 
-The `PUT /upload` endpoint should expect the `Content-Type` header of the request to be set to the MIME type of the blob and the body of the request to the raw data of the blob.
+The `PUT /upload` endpoint MUST accept binary data in the body of the request and MAY use the `Content-Type` header to get the MIME type of the data
 
-The endpoint MUST return a [Blob Descriptor](./README.md#blob-descriptor) if the upload was successful or an error object if not.
+The endpoint MUST NOT modify the blob in any way and should return the exact same sha256 that was uploaded. This is critical to allow users to re-upload their blobs to new servers
 
-Servers may reject an upload for any reason and should respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
+The endpoint MUST return a [Blob Descriptor](./README.md#blob-descriptor) if the upload was successful or an error object if not
+
+Servers MAY reject an upload for any reason and should respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
 #### Upload Authorization (required)
 
-Servers must accept an authorization event when uploading blobs and should perform additional checks
+Servers MUST accept an authorization event when uploading blobs and should perform additional checks
 
-1. The `t` tag must be set to `upload`
-2. A `size` tag must be present and set to the total size of the uploaded blob
+1. The `t` tag MUST be set to `upload`
+2. A `size` tag MUST be present and set to the total size of the uploaded blob in bytes
 
 Example Authorization event:
 
@@ -146,11 +171,11 @@ Example Authorization event:
 
 ### GET /list/pubkey - List Blobs
 
-The `/list/<pubkey>` endpoint must return a JSON array of [Blob Descriptor](./README.md#blob-descriptor) that where uploaded by the specified pubkey
+The `/list/<pubkey>` endpoint MUST return a JSON array of [Blob Descriptor](#blob-descriptor) that where uploaded by the specified pubkey
 
-The endpoint must support a `since` and `until` query parameter to limit the returned blob descriptors by the `created` field
+The endpoint MUST support a `since` and `until` query parameter to limit the returned blobs by thier `uploaded` date
 
-Servers may reject an upload for any reason and MUST respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
+Servers may reject a list for any reason and MUST respond with the appropriate HTTP `4xx` status code and an error message explaining the reason for the rejection
 
 #### List Authorization (optional)
 
@@ -185,7 +210,7 @@ Servers may reject a delete request for any reason and should respond with the a
 
 #### Delete Authorization (required)
 
-Servers must accept an authorization event when deleting blobs
+Servers MUST accept an authorization event when deleting blobs
 
 Servers should perform additional checks on the authorization event
 
