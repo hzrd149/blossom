@@ -1,0 +1,40 @@
+BUD-02
+======
+
+User Server List
+-------------------------
+
+`draft` `optional`
+
+Defines a replaceable event using `kind:10063` to advertise the blossom servers for downloading a user's blobs from.
+
+The event MUST include an ordered list of `server` tags with the server URL including the `http://` or `https://`.
+
+The order of these tags is important and should be arranged with the users most "reliable" or "trusted" servers coming first.
+
+The `.content` is not used.
+
+```json
+{
+  "id": "e4bee088334cb5d38cff1616e964369c37b6081be997962ab289d6c671975d71",
+  "pubkey": "781208004e09102d7da3b7345e64fd193cd1bc3fce8fdae6008d77f9cabcd036",
+  "content": "",
+  "kind": 10063,
+  "created_at": 1708774162,
+  "tags": [
+    ["server", "https://cdn.self.hosted"],
+    ["server", "https://cdn.satellite.earth"]
+  ],
+  "sig": "cc5efa74f59e80622c77cacf4dd62076bcb7581b45e9acff471e7963a1f4d8b3406adab5ee1ac9673487480e57d20e523428e60ffcc7e7a904ac882cfccfc653"
+}
+```
+
+## Client Integration
+
+When uploading blobs clients should attempt to upload the blob to all or at least the top 3 server on the list event.
+
+This ensures that the blob is available in multiple locations in the case one of the servers goes offline.
+
+## Server Integration
+
+Servers may use this event kind to discover other servers that a user is uploading to in order to download specific blobs from.

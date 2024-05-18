@@ -29,6 +29,17 @@ BUDs stand for **Blossom Upgrade Documents**.
 
 See the [BUDs](./buds) folder and specifically [BUD-01](./buds/bud-01.md) for a detailed explanation of the endpoints
 
+## BUDs
+
+ - [Core endpoint description](./buds/bud-01.md)
+ - [User Server List](./buds/bud-02.md)
+
+## Event kinds
+| kind          | description                | NIP                      |
+| ------------- | -------------------------- | ------------------------ |
+| `24242`       | Authorization event        | [01](./buds/bud-01.md.md)|
+| `10063`       | User Server List           | [02](./buds/bud-02.md.md)|
+
 ## License
 
 Public domain.
