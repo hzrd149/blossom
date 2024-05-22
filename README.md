@@ -15,19 +15,19 @@ Blossom Servers expose four endpoints for managing blobs
 - `GET /<sha256>` (optional file `.ext`)
 - `HEAD /<sha256>` (optional file `.ext`)
 - `PUT /upload`
-  - `Authentication`: Signed [nostr event](./buds/bud-01.md#upload-authorization-required)
+  - `Authentication`: Signed [nostr event](./buds/01.md#upload-authorization-required)
   - Return a blob descriptor
 - `GET /list/<pubkey>`
   - Returns an array of blob descriptors
-  - `Authentication` _(optional)_: Signed [nostr event](./buds/bud-01.md#list-authorization-optional)
+  - `Authentication` _(optional)_: Signed [nostr event](./buds/01.md#list-authorization-optional)
 - `DELETE /<sha256>`
-  - `Authentication`: Signed [nostr event](./buds/bud-01.md#delete-authorization-required)
+  - `Authentication`: Signed [nostr event](./buds/01.md#delete-authorization-required)
 
 ## Protocol specification (BUDs)
 
 BUDs stand for **Blossom Upgrade Documents**.
 
-See the [BUDs](./buds) folder and specifically [BUD-01](./buds/bud-01.md) for a detailed explanation of the endpoints
+See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) for a detailed explanation of the endpoints
 
 ## License
 
