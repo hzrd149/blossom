@@ -1,6 +1,8 @@
-# BUD-01
+BUD-01
+======
 
-## Core endpoint outline
+Core endpoint outline
+---------------------
 
 `draft` `mandatory`
 
@@ -28,17 +30,17 @@ Example event:
 
 ```json
 {
-  "id": "a2d97d0c8b19d6d91b8bd3c36feeb69f176861f9443ba575cbabf9941d4200bf",
-  "pubkey": "2db760eae90b5764f3503e0c5660a1a74be9ded5eb8b493e81f65c28a088e9fe",
+  "id": "bb653c815da18c089f3124b41c4b5ec072a40b87ca0f50bbbc6ecde9aca442eb",
+  "pubkey": "b53185b9f27962ebdf76b8a9b0a84cd8b27f9f3d4abd59f715788a3bf9e7f75e",
   "kind": 24242,
   "content": "Upload bitcoin.pdf",
   "created_at": 1708773959,
   "tags": [
     ["t", "upload"],
-    ["size", "184292"],
+    ["x", "b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553"],
     ["expiration", "1708858680"]
   ],
-  "sig": "1442c68d5a661d821e9a4b91999b433a1d11557eeb6255496c6875c00d02497deb03dcb54597f210582cd62b621df21b080a0eadbd66ae703264b5929b160d05"
+  "sig": "d0d58c92afb3f4f1925120b99c39cffe77d93e82f488c5f8f482e8f97df75c5357175b5098c338661c37d1074b0a18ab5e75a9df08967bfb200930ec6a76562f"
 }
 ```
 
@@ -149,23 +151,23 @@ Servers MAY reject an upload for any reason and should respond with the appropri
 Servers MUST accept an authorization event when uploading blobs and should perform additional checks
 
 1. The `t` tag MUST be set to `upload`
-2. A `size` tag MUST be present and set to the total size of the uploaded blob in bytes
+2. The `x` tag MUST be present and set to the sha256 hash of the blob
 
 Example Authorization event:
 
 ```json
 {
-  "id": "65c72db0c3b82ffcb395589d01f3e2849c28753e9e7156ceb88e5dd937ca845f",
-  "pubkey": "6ea2ab6f206844b1fe48bd8a7eb22ed6e4114a5b2a5252700a729a88142b2bc3",
+  "id": "bb653c815da18c089f3124b41c4b5ec072a40b87ca0f50bbbc6ecde9aca442eb",
+  "pubkey": "b53185b9f27962ebdf76b8a9b0a84cd8b27f9f3d4abd59f715788a3bf9e7f75e",
   "kind": 24242,
   "content": "Upload bitcoin.pdf",
   "created_at": 1708773959,
   "tags": [
     ["t", "upload"],
-    ["size", "184292"],
+    ["x", "b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553"],
     ["expiration", "1708858680"]
   ],
-  "sig": "df099ecaeadb7ebcd7ec8247eb57eb6720d39f64a024be3ef1ed9b5d51087b0e866bd08fd317d5167f9bdb9cdae4e593539b86678c4d922db17d0463e0f9e0e3"
+  "sig": "d0d58c92afb3f4f1925120b99c39cffe77d93e82f488c5f8f482e8f97df75c5357175b5098c338661c37d1074b0a18ab5e75a9df08967bfb200930ec6a76562f"
 }
 ```
 
