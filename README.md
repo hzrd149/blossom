@@ -24,6 +24,8 @@ Blossom Servers expose four endpoints for managing blobs
   - `Authentication` _(optional)_: Signed [nostr event](./buds/01.md#list-authorization-optional)
 - `DELETE /<sha256>` [BUD-2](./buds/02.md#delete-sha256---delete-blob)
   - `Authentication`: Signed [nostr event](./buds/01.md#delete-authorization-required)
+- `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob)
+  - `Authentication`: Signed [nostr event](./buds/01.md#upload-authorization-required)
 
 ## Protocol specification (BUDs)
 
