@@ -35,14 +35,17 @@ See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-0
 
 ## BUDs
 
- - [Core endpoint description](./buds/bud-01.md)
- - [User Server List](./buds/bud-02.md)
+- [Server requirements and blob retrieval](./buds/01.md)
+- [Blob upload and management](./buds/02.md)
+- [User Server List](./buds/03.md)
+- [Mirroring blobs](./buds/04.md)
 
 ## Event kinds
-| kind          | description                | NIP                      |
-| ------------- | -------------------------- | ------------------------ |
-| `24242`       | Authorization event        | [01](./buds/bud-01.md.md)|
-| `10063`       | User Server List           | [02](./buds/bud-02.md.md)|
+
+| kind    | description         | BUD                |
+| ------- | ------------------- | ------------------ |
+| `24242` | Authorization event | [01](./buds/01.md) |
+| `10063` | User Server List    | [03](./buds/03.md) |
 
 ## License
 
