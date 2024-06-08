@@ -33,6 +33,20 @@ BUDs stand for **Blossom Upgrade Documents**.
 
 See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-02](./buds/02.md) for a detailed explanation of the endpoints
 
+## BUDs
+
+- [Server requirements and blob retrieval](./buds/01.md)
+- [Blob upload and management](./buds/02.md)
+- [User Server List](./buds/03.md)
+- [Mirroring blobs](./buds/04.md)
+
+## Event kinds
+
+| kind    | description         | BUD                |
+| ------- | ------------------- | ------------------ |
+| `24242` | Authorization event | [01](./buds/01.md) |
+| `10063` | User Server List    | [03](./buds/03.md) |
+
 ## License
 
 Public domain.
