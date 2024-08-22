@@ -16,11 +16,9 @@ Blossom Servers expose four endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
-- `PUT /upload` [BUD-02](./buds/02.md#put-upload---upload-blob)
+- `PUT /upload` [BUD-2](./buds/02.md#put-upload---upload-blob)
   - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
   - Return a blob descriptor
-- `POST /info` [BUD-02](./buds/02.md#post-info---upload-requirements)
-  - Returns a JSON object with the server requirements for uploading specific blob
 - `GET /list/<pubkey>` [BUD-02](./buds/02.md#get-listpubkey---list-blobs)
   - Returns an array of blob descriptors
   - `Authentication` _(optional)_: Signed [nostr event](./buds/02.md#list-authorization-optional)
@@ -28,6 +26,8 @@ Blossom Servers expose four endpoints for managing blobs
   - `Authentication`: Signed [nostr event](./buds/02.md#delete-authorization-required)
 - `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob)
   - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
+- `POST /info` [BUD-02](./buds/02.md#post-info---upload-requirements)
+  - Returns a JSON file with requirements for uploading specific blob
 
 ## Protocol specification (BUDs)
 
