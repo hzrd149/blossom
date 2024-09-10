@@ -39,6 +39,7 @@ See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-0
 - [BUD-02: Blob upload and management](./buds/02.md)
 - [BUD-03: User Server List](./buds/03.md)
 - [BUD-04: Mirroring blobs](./buds/04.md)
+- [BUD-07: Paid storage](./buds/07.md)
 
 ## Event kinds
 
