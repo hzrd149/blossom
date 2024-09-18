@@ -16,9 +16,10 @@ Blossom Servers expose four endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
-- `PUT /upload` [BUD-2](./buds/02.md#put-upload---upload-blob)
+- `PUT /upload` [BUD-02](./buds/02.md#put-upload---upload-blob)
   - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
   - Return a blob descriptor
+- `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements)
 - `GET /list/<pubkey>` [BUD-02](./buds/02.md#get-listpubkey---list-blobs)
   - Returns an array of blob descriptors
   - `Authentication` _(optional)_: Signed [nostr event](./buds/02.md#list-authorization-optional)
@@ -39,6 +40,7 @@ See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-0
 - [BUD-02: Blob upload and management](./buds/02.md)
 - [BUD-03: User Server List](./buds/03.md)
 - [BUD-04: Mirroring blobs](./buds/04.md)
+- [BUD-06: Upload requirements](./buds/06.md)
 
 ## Event kinds
 
