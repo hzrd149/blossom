@@ -27,6 +27,8 @@ Blossom Servers expose four endpoints for managing blobs
   - `Authentication`: Signed [nostr event](./buds/02.md#delete-authorization-required)
 - `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob)
   - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
+- `PUT /media` [BUD-05](./buds/05.md)
+  - `Authentication`: Signed [nostr event](./buds/05.md#upload-authorization)
 
 ## Protocol specification (BUDs)
 
@@ -40,6 +42,7 @@ See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-0
 - [BUD-02: Blob upload and management](./buds/02.md)
 - [BUD-03: User Server List](./buds/03.md)
 - [BUD-04: Mirroring blobs](./buds/04.md)
+- [BUD-05: Media optimization](./buds/05.md)
 - [BUD-06: Upload requirements](./buds/06.md)
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 
