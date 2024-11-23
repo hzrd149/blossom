@@ -1,4 +1,4 @@
-# 🌸 Blossom - Blobs stored simply on mediaservers
+# 🌸 Blossom - Blobs stored simply on servers
 
 Blossom uses [nostr](https://github.com/nostr-protocol/nostr) public / private keys for identities. Users are expected to sign authorization events to prove their identity when interacting with servers
 
