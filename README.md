@@ -12,7 +12,7 @@ Blobs are packs of binary data addressed by their sha256 hash
 
 ## How does it work?
 
-Blossom Servers expose four endpoints for managing blobs
+Blossom Servers expose a few endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
@@ -27,7 +27,8 @@ Blossom Servers expose four endpoints for managing blobs
   - `Authentication`: Signed [nostr event](./buds/02.md#delete-authorization-required)
 - `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob)
   - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
-- `PUT /media` [BUD-05](./buds/05.md)
+- `HEAD /media` [BUD-05](./buds/05.md#head-media)
+- `PUT /media` [BUD-05](./buds/05.md#put-media)
   - `Authentication`: Signed [nostr event](./buds/05.md#upload-authorization)
 
 ## Protocol specification (BUDs)
