@@ -15,21 +15,31 @@ Blobs are packs of binary data addressed by their sha256 hash
 Blossom Servers expose a few endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
+
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
+
 - `PUT /upload` [BUD-02](./buds/02.md#put-upload---upload-blob)
   - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
   - Return a blob descriptor
+
 - `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements)
+
 - `GET /list/<pubkey>` [BUD-02](./buds/02.md#get-listpubkey---list-blobs)
   - Returns an array of blob descriptors
   - `Authentication` _(optional)_: Signed [nostr event](./buds/02.md#list-authorization-optional)
+
 - `DELETE /<sha256>` [BUD-02](./buds/02.md#delete-sha256---delete-blob)
   - `Authentication`: Signed [nostr event](./buds/02.md#delete-authorization-required)
+
 - `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob)
   - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
+
 - `HEAD /media` [BUD-05](./buds/05.md#head-media)
+
 - `PUT /media` [BUD-05](./buds/05.md#put-media)
   - `Authentication`: Signed [nostr event](./buds/05.md#upload-authorization)
+
+- `PUT /report/<sha245>` [BUD-07](./buds/07.md)
 
 ## Protocol specification (BUDs)
 
@@ -45,6 +55,7 @@ See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-0
 - [BUD-04: Mirroring blobs](./buds/04.md)
 - [BUD-05: Media optimization](./buds/05.md)
 - [BUD-06: Upload requirements](./buds/06.md)
+- [BUD-07: Blob Report](./buds/07.md)
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 
 ## Event kinds
