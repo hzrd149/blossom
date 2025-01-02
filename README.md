@@ -46,6 +46,7 @@ See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-0
 - [BUD-05: Media optimization](./buds/05.md)
 - [BUD-06: Upload requirements](./buds/06.md)
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
+- [BUD-10: Chunked blobs](./buds/10.md)
 
 ## Event kinds
 
@@ -53,6 +54,7 @@ See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-0
 | ------- | ------------------- | ------------------ |
 | `24242` | Authorization event | [01](./buds/01.md) |
 | `10063` | User Server List    | [03](./buds/03.md) |
+| `2001`  | Merkle tree         | [10](./buds/10.md) |
 
 ## License
 
