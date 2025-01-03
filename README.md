@@ -39,7 +39,7 @@ Blossom Servers expose a few endpoints for managing blobs
 - `PUT /media` [BUD-05](./buds/05.md#put-media)
   - `Authentication`: Signed [nostr event](./buds/05.md#upload-authorization)
 
-- `PUT /report/<sha245>` [BUD-07](./buds/07.md)
+- `PUT /report` [BUD-09](./buds/09.md)
 
 ## Protocol specification (BUDs)
 
