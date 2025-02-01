@@ -41,6 +41,8 @@ Blossom Servers expose a few endpoints for managing blobs
 
 - `PUT /report` [BUD-09](./buds/09.md)
 
+- `GET /information` [BUD-09](./buds/10.md)
+
 ## Protocol specification (BUDs)
 
 BUDs stand for **Blossom Upgrade Documents**.
@@ -57,6 +59,7 @@ See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-0
 - [BUD-06: Upload requirements](./buds/06.md)
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 - [BUD-09: Blob Report](./buds/09.md)
+- [BUD-12: Media servers information document](./buds/12.md)
 
 ## Event kinds
 
