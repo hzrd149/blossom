@@ -41,6 +41,8 @@ Blossom Servers expose a few endpoints for managing blobs
 
 - `PUT /report` [BUD-09](./buds/09.md)
 
+- `GET /lookup/<sha256>` (optional file `.ext`) [BUD-17](./buds/17.md)
+
 ## Protocol specification (BUDs)
 
 BUDs stand for **Blossom Upgrade Documents**.
