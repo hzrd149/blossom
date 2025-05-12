@@ -41,7 +41,7 @@ Blossom Servers expose a few endpoints for managing blobs
 
 - `PUT /report` [BUD-09](./buds/09.md)
 
-- `GET /information` [BUD-12](./buds/10.md)
+- `GET /info` [BUD-12](./buds/10.md)
 
 ## Protocol specification (BUDs)
 
