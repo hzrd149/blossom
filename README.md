@@ -25,6 +25,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-06: Upload requirements](./buds/06.md)
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 - [BUD-09: Blob Report](./buds/09.md)
+- [BUD-10: Blob Search](./buds/10.md)
 
 ## Endpoints
 
@@ -47,6 +48,7 @@ Blossom Servers expose a few endpoints for managing blobs
 - `PUT /media` [BUD-05](./buds/05.md#put-media)
   - `Authentication`: Signed [nostr event](./buds/05.md#upload-authorization)
 - `PUT /report` [BUD-09](./buds/09.md)
+- `GET /search` [BUD-10](./buds/10.md)
 
 ## Event kinds
 
