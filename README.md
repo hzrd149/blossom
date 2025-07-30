@@ -23,6 +23,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-04: Mirroring blobs](./buds/04.md)
 - [BUD-05: Media optimization](./buds/05.md)
 - [BUD-06: Upload requirements](./buds/06.md)
+- [BUD-07: Payment required](./buds/07.md)
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 - [BUD-09: Blob Report](./buds/09.md)
 
