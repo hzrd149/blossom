@@ -4,13 +4,30 @@ Blossom uses [nostr](https://github.com/nostr-protocol/nostr) public / private k
 
 ## What is it?
 
-Blossom is a spec for a set of HTTP endpoints that allow users to store blobs of data on publicly accessible servers
+Blossom is a specification for a set of HTTP endpoints that allow users to store blobs of data on publicly accessible servers
 
 ## What are blobs
 
 Blobs are packs of binary data addressed by their sha256 hash
 
-## How does it work?
+## Protocol specification (BUDs)
+
+BUDs or **Blossom Upgrade Documents** are short documents that outline an additional feature that a blossom server may implement.
+
+## BUDs
+
+- [BUD-00: Blossom Upgrade Documents](./buds/00.md)
+- [BUD-01: Server requirements and blob retrieval](./buds/01.md)
+- [BUD-02: Blob upload and management](./buds/02.md)
+- [BUD-03: User Server List](./buds/03.md)
+- [BUD-04: Mirroring blobs](./buds/04.md)
+- [BUD-05: Media optimization](./buds/05.md)
+- [BUD-06: Upload requirements](./buds/06.md)
+- [BUD-07: Payment required](./buds/07.md)
+- [BUD-08: Nostr File Metadata Tags](./buds/08.md)
+- [BUD-09: Blob Report](./buds/09.md)
+
+## Endpoints
 
 Blossom Servers expose a few endpoints for managing blobs
 
@@ -30,23 +47,7 @@ Blossom Servers expose a few endpoints for managing blobs
 - `HEAD /media` [BUD-05](./buds/05.md#head-media)
 - `PUT /media` [BUD-05](./buds/05.md#put-media)
   - `Authentication`: Signed [nostr event](./buds/05.md#upload-authorization)
-
-## Protocol specification (BUDs)
-
-BUDs stand for **Blossom Upgrade Documents**.
-
-See the [BUDs](./buds) folder and specifically [BUD-01](./buds/01.md) and [BUD-02](./buds/02.md) for a detailed explanation of the endpoints
-
-## BUDs
-
-- [BUD-01: Server requirements and blob retrieval](./buds/01.md)
-- [BUD-02: Blob upload and management](./buds/02.md)
-- [BUD-03: User Server List](./buds/03.md)
-- [BUD-04: Mirroring blobs](./buds/04.md)
-- [BUD-05: Media optimization](./buds/05.md)
-- [BUD-06: Upload requirements](./buds/06.md)
-- [BUD-07: Paid storage](./buds/07.md)
-- [BUD-08: Nostr File Metadata Tags](./buds/08.md)
+- `PUT /report` [BUD-09](./buds/09.md)
 
 ## Event kinds
 
