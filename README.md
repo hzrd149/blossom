@@ -38,7 +38,7 @@ Blossom Servers expose a few endpoints for managing blobs
   - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
   - Return a blob descriptor
 - `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements)
-- `GET /list/<pubkey>` [BUD-02](./buds/02.md#get-listpubkey---list-blobs)
+- `GET /list/<pubkey>` [BUD-02](./buds/02.md#get-listpubkey---list-blobs-unrecommended) _(optional, unrecommended)_
   - Returns an array of blob descriptors
   - `Authentication` _(optional)_: Signed [nostr event](./buds/02.md#list-authorization-optional)
 - `DELETE /<sha256>` [BUD-02](./buds/02.md#delete-sha256---delete-blob)
