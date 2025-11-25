@@ -1,0 +1,207 @@
+# BUD-10
+
+## Blossom URI Schema
+
+`draft` `optional`
+
+Defines a URI schema for referencing Blossom blobs similar to magnet links. This allows users to share blob references that include discovery hints for locating the blob on other Blossom servers.
+
+## URI Format
+
+The `blossom:` URI schema MUST follow this format:
+
+```
+blossom:<sha256>.<ext>[?param1=value1&param2=value2...]
+```
+
+### Components
+
+- `blossom:` - The URI scheme identifier
+- `<sha256>` - A 64 character lowercase hexadecimal sha256 hash of the blob
+- `.<ext>` - A file extension (e.g., `.pdf`, `.png`, `.jpg`, `.mp4`). If the file extension is unknown, it MUST default to `.bin`
+- `[?params]` - Optional query parameters for discovery hints
+
+### Examples
+
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=cdn.example.com
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.png?as=ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0&sz=184292
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.bin
+```
+
+## Query Parameters
+
+The `blossom:` URI MAY include the following optional query parameters to assist with blob discovery:
+
+### `as` - Author
+
+The `as` parameter specifies the hex pubkey of a user who uploaded the blob. This parameter MAY be repeated multiple times to specify multiple potential authors.
+
+Clients can use this parameter to lookup the author's [BUD-03](./03.md) server list (`kind:10063`) and attempt to retrieve the blob from those servers.
+
+Example:
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?as=ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0
+```
+
+Multiple authors:
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?as=ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0&as=781208004e09102d7da3b7345e64fd193cd1bc3fce8fdae6008d77f9cabcd036
+```
+
+### `xs` - Server
+
+The `xs` parameter specifies a server domain where the blob may be available. This parameter MAY be repeated multiple times to specify multiple server hints.
+
+The value SHOULD be a domain name only. Clients MUST assume the server operates at the root of the domain as per [BUD-01](./01.md#endpoints). The protocol scheme (http/https) MAY be included but is optional. When no scheme is specified, clients SHOULD try both `https://` and `http://` with preference given to `https://`.
+
+Example:
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=cdn.satellite.earth
+```
+
+With optional scheme:
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=https://cdn.satellite.earth
+```
+
+Multiple servers:
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=cdn.satellite.earth&xs=blossom.primal.net
+```
+
+### `sz` - Size
+
+The `sz` parameter MAY be used to specify the size of the blob in bytes. This can help clients:
+
+- Verify the downloaded blob matches the expected size
+- Display download progress or estimated time
+- Decide whether to download the blob based on size constraints
+- Pre-allocate storage space
+
+Example:
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?sz=184292
+```
+
+The size MUST be a positive integer representing the exact number of bytes in the blob. Clients SHOULD verify that the downloaded blob size matches the `sz` parameter if provided.
+
+### Combined Parameters
+
+All parameters MAY be combined in a single URI:
+
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=cdn.satellite.earth&as=ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0&xs=blossom.primal.net&sz=184292
+```
+
+## Client Implementation
+
+### Parsing blossom URIs
+
+When parsing a `blossom:` URI, clients MUST:
+
+1. Verify the URI starts with the `blossom:` scheme
+2. Extract the 64 character hexadecimal sha256 hash
+3. Extract the file extension (which MUST be present)
+4. Parse any query parameters (`as`, `xs`, and `sz`) into appropriate types to handle multiple values
+
+### Resolution Strategy
+
+When resolving a `blossom:` URI to retrieve the actual blob, clients SHOULD attempt retrieval in the following order:
+
+1. **Server Hints**: If the URI contains `xs` parameters, attempt to retrieve the blob from each specified server in the order they appear
+   - For servers without a protocol scheme, try `https://` first, then `http://`
+   - Request the blob using the [BUD-01](./01.md#get-sha256---get-blob) `GET /<sha256>` endpoint
+   - Include the file extension from the URI if present
+   - If the `sz` parameter is present, verify the `Content-Length` header matches before downloading
+
+2. **Author Server Lists**: If the URI contains `as` parameters, for each author pubkey:
+   - Fetch the author's [BUD-03](./03.md) server list (`kind:10063`)
+   - Attempt to retrieve the blob from each server in the author's list in order
+   - If multiple authors are specified, try each author's server list before giving up
+
+3. **Fallback Servers**: If the blob cannot be found using hints, clients MAY fallback to:
+   - Well-known public Blossom servers
+   - Local cache or previously known locations
+   - User-configured default servers
+
+When downloading is complete, if the `sz` parameter was provided, clients SHOULD verify that the downloaded blob size matches the expected size.
+
+### Example Resolution Flow
+
+Given this URI:
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=cdn.example.com&as=ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0&sz=184292
+```
+
+A client would:
+
+1. Try `http://cdn.example.com/b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf`
+2. Check that `Content-Length` header is `184292` before downloading
+3. If that fails, fetch the `kind:10063` server list for pubkey `ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0`
+4. Try each server from the author's list in order
+5. Verify the downloaded blob is exactly `184292` bytes
+6. If still not found, fallback to well-known servers or local cache
+
+### Creating and Sharing blossom URIs
+
+When creating or sharing a `blossom:` URI, clients MUST:
+
+1. Always include the sha256 hash
+2. Always include a file extension - if the file extension is unknown or cannot be determined, default to `.bin` (similar to how [BUD-01](./01.md#get-sha256---get-blob) defaults the MIME type to `application/octet-stream`)
+
+Clients SHOULD also:
+
+3. Include the `sz` parameter with the blob size in bytes to help with verification and download management
+4. Include at least one `xs` parameter pointing to a server where the blob is known to exist
+5. Include the `as` parameter with the uploader's pubkey to enable future discovery via their server list
+6. Include multiple `xs` parameters if the blob has been mirrored to multiple servers
+
+Example of creating a URI after upload:
+
+```javascript
+// After uploading to cdn.satellite.earth
+const uri = `blossom:${sha256}.${ext}?xs=cdn.satellite.earth&as=${userPubkey}&sz=${size}`;
+```
+
+## Use Cases
+
+The `blossom:` URI schema enables several use cases:
+
+- **Decentralized Content Addressing**: Share content by hash with discovery hints instead of relying on a single server URL
+- **Resilient Links**: Links that can survive server outages by including multiple server hints or author information
+- **P2P Sharing**: Share blob references that don't depend on a specific server remaining online
+
+## Examples
+
+### Minimal URI
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf
+```
+
+### Unknown File Type
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.bin
+```
+
+### With Single Server Hint
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=cdn.satellite.earth
+```
+
+### With Size and Author
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?as=ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0&sz=184292
+```
+
+### Full Featured URI
+```
+blossom:b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=cdn.satellite.earth&xs=blossom.primal.net&as=ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0&sz=184292
+```
+
+### Image with Multiple Authors and Servers
+```
+blossom:a7b3c2d1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1.png?xs=cdn.example.com&xs=media.nostr.build&as=781208004e09102d7da3b7345e64fd193cd1bc3fce8fdae6008d77f9cabcd036&as=b53185b9f27962ebdf76b8a9b0a84cd8b27f9f3d4abd59f715788a3bf9e7f75e&sz=2547831
+```
+
