@@ -1,6 +1,6 @@
 # 🌸 Blossom - Blobs stored simply on mediaservers
 
-Blossom uses [nostr](https://github.com/nostr-protocol/nostr) public / private keys for identities. Users are expected to sign authorization events to prove their identity when interacting with servers
+Blossom uses [nostr](https://github.com/nostr-protocol/nostr) public / private keys for identities. Users are expected to sign authentication events to prove their identity when interacting with servers
 
 ## What is it?
 
@@ -54,7 +54,7 @@ Blossom Servers expose a few endpoints for managing blobs
 
 | kind    | description         | BUD                |
 | ------- | ------------------- | ------------------ |
-| `24242` | Authorization event | [01](./buds/01.md) |
+| `24242` | Authentication event | [01](./buds/01.md) |
 | `10063` | User Server List    | [03](./buds/03.md) |
 
 ## License
