@@ -27,6 +27,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 - [BUD-09: Blob Report](./buds/09.md)
 - [BUD-10: Blossom URI Schema](./buds/10.md)
+- [BUD-11: Local Blob Cache](./buds/11.md)
 
 ## Endpoints
 
