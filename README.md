@@ -1,6 +1,6 @@
 # 🌸 Blossom - Blobs stored simply on mediaservers
 
-Blossom uses [nostr](https://github.com/nostr-protocol/nostr) public / private keys for identities. Users are expected to sign authorization events to prove their identity when interacting with servers
+Blossom uses [nostr](https://github.com/nostr-protocol/nostr) public / private keys for users identities.
 
 ## What is it?
 
@@ -27,6 +27,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 - [BUD-09: Blob Report](./buds/09.md)
 - [BUD-10: Blossom URI Schema](./buds/10.md)
+- [BUD-11: Nostr Authorization](./buds/11.md)
 
 ## Endpoints
 
@@ -35,26 +36,26 @@ Blossom Servers expose a few endpoints for managing blobs
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
 - `PUT /upload` [BUD-02](./buds/02.md#put-upload---upload-blob)
-  - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
+  - `Authentication`: Signed [nostr event](./buds/11.md) (see [BUD-02](./buds/02.md#upload-authorization))
   - Return a blob descriptor
 - `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements)
 - `GET /list/<pubkey>` [BUD-02](./buds/02.md#get-listpubkey---list-blobs-unrecommended) _(optional, unrecommended)_
   - Returns an array of blob descriptors
-  - `Authentication` _(optional)_: Signed [nostr event](./buds/02.md#list-authorization-optional)
+  - `Authentication` _(optional)_: Signed [nostr event](./buds/11.md) (see [BUD-02](./buds/02.md#list-authorization))
 - `DELETE /<sha256>` [BUD-02](./buds/02.md#delete-sha256---delete-blob)
-  - `Authentication`: Signed [nostr event](./buds/02.md#delete-authorization-required)
+  - `Authentication`: Signed [nostr event](./buds/11.md) (see [BUD-02](./buds/02.md#delete-authorization))
 - `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob)
-  - `Authentication`: Signed [nostr event](./buds/02.md#upload-authorization-required)
+  - `Authentication`: Signed [nostr event](./buds/11.md) (see [BUD-02](./buds/02.md#upload-authorization))
 - `HEAD /media` [BUD-05](./buds/05.md#head-media)
 - `PUT /media` [BUD-05](./buds/05.md#put-media)
-  - `Authentication`: Signed [nostr event](./buds/05.md#upload-authorization)
+  - `Authentication`: Signed [nostr event](./buds/11.md) (see [BUD-05](./buds/05.md#upload-authorization))
 - `PUT /report` [BUD-09](./buds/09.md)
 
 ## Event kinds
 
 | kind    | description         | BUD                |
 | ------- | ------------------- | ------------------ |
-| `24242` | Authorization event | [01](./buds/01.md) |
+| `24242` | Authorization token | [11](./buds/11.md) |
 | `10063` | User Server List    | [03](./buds/03.md) |
 
 ## License
