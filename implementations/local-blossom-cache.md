@@ -1,0 +1,102 @@
+# Local Blossom Cache
+
+This document defines the specification for a local blob cache server that can be hosted on `127.0.0.1:24242` to provide fast, local access to cached blobs or proxy requests to other public Blossom servers.
+
+## Server Address
+
+A local blob cache server MUST be accessible on `http://127.0.0.1:24242`. The port `24242` is chosen to align with the Nostr event kind used for Blossom authorization events.
+
+## Health Check Endpoint
+
+The server MUST respond with a 2xx HTTP status code (typically `200 OK`) on the `HEAD /` endpoint to allow local applications to easily detect if the cache server is available.
+
+The `HEAD /` endpoint MUST return a 2xx HTTP status code. The response MUST NOT include a response body per [RFC 7231](https://www.rfc-editor.org/rfc/rfc7231#section-4.3.2).
+
+This endpoint enables simple health checks:
+
+```bash
+curl -I http://127.0.0.1:24242/
+```
+
+## Access Control
+
+The server SHOULD NOT require any authentication for blob downloads or uploads. All requests MUST be served without requiring an `Authorization` header.
+
+If an implementation needs to add access control, it SHOULD restrict access based on IP address to ensure requests only come from `127.0.0.1`. This ensures that local applications can freely access cached blobs without the overhead of signing authorization events.
+
+## Blob Retrieval
+
+The server MUST implement the `GET /<sha256>` and `HEAD /<sha256>` endpoints as defined in [BUD-01](./01.md#get-sha256---get-blob):
+
+1. The server MUST accept optional file extensions in the URL (e.g., `/<sha256>.pdf`)
+2. The server MUST set appropriate `Content-Type` headers or default to `application/octet-stream`
+
+## Range Requests
+
+To better support mobile devices, video files, or low bandwidth connections, implementations SHOULD support range requests ([RFC 7233 section 3](https://www.rfc-editor.org/rfc/rfc7233#section-3)) on the `GET /<sha256>` endpoint and signal support using the `accept-ranges: bytes` and `content-length` headers on the `HEAD /<sha256>` endpoint.
+
+See [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests) for more details.
+
+## Proxy Hints
+
+The server SHOULD accept [BUD-10](./10.md) query parameters `xs` (server) and `as` (author) hints on the `GET /<sha256>` endpoint to enable proxying blob requests to other Blossom servers when the blob is not available in the local cache.
+
+### Query Parameter Format
+
+When a blob is not found in the local cache, the server MAY use the following query parameters to attempt retrieval from other Blossom servers:
+
+- `xs=<server>` - One or more server hints where the blob may be available
+- `as=<pubkey>` - One or more author pubkeys whose server lists may contain the blob
+
+### Example Request
+
+```
+GET /b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553.pdf?xs=cdn.example.com&as=ec4425ff5e9446080d2f70440188e3ca5d6da8713db7bdeef73d0ed54d9093f0
+```
+
+### Proxy Behavior
+
+When the server receives a request with proxy hints and the blob is not in the local cache:
+
+1. The server SHOULD attempt to retrieve the blob from the servers specified in the `xs` parameters
+2. If `xs` hints fail, the server MAY attempt to retrieve the blob using the `as` parameters by:
+   - Fetching the author's [BUD-03](./03.md) server list (`kind:10063`)
+   - Attempting to retrieve the blob from servers in the author's list
+3. If the blob is successfully retrieved, the server SHOULD:
+   - Cache the blob locally for future requests
+   - Return the blob to the client with appropriate headers
+4. If the blob cannot be retrieved from any hint, the server MUST return a `404 Not Found` response
+
+This proxy functionality allows the local cache server to act as a transparent proxy, automatically fetching and caching blobs from remote Blossom servers when needed.
+
+## CORS Headers
+
+The server MUST set the `Access-Control-Allow-Origin: *` header on all responses to ensure compatibility with web applications, as specified in [BUD-01](./01.md#cross-origin-headers).
+
+## Use Cases
+
+A local blob cache server enables several use cases:
+
+- **Fast Local Access**: Applications can check the local cache first before making network requests to remote Blossom servers
+- **Offline Access**: Previously cached blobs remain accessible even when network connectivity is unavailable
+- **Bandwidth Savings**: Reduces redundant downloads of frequently accessed blobs
+- **Development**: Provides a simple local server for testing Blossom applications without requiring remote server access
+
+## Implementation Notes
+
+- The server SHOULD implement efficient blob storage, such as using the sha256 hash as the filename or storage key
+- The server SHOULD implement cache eviction policies (e.g., LRU, size-based limits) to manage storage
+- The server SHOULD validate that downloaded blobs match their sha256 hash before caching
+- The server MAY implement the `HEAD /<sha256>` endpoint to allow clients to check blob availability without downloading
+
+## Example Implementation Flow
+
+1. Client requests blob: `GET http://127.0.0.1:24242/<sha256>`
+2. Server checks local cache
+3. If found: Return blob immediately
+4. If not found and proxy hints provided:
+   - Attempt to fetch from `xs` server hints
+   - If that fails, attempt to fetch using `as` author hints
+   - Cache the blob if successfully retrieved
+   - Return the blob to the client
+5. If not found and no proxy hints: Return `404 Not Found`
