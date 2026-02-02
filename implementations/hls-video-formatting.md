@@ -1,6 +1,6 @@
 # HLS Video Formatting
 
-This document explains how to format [HLS](https://datatracker.ietf.org/doc/html/rfc8216) (HTTP Live Streaming) videos to be compatible with [BUD-01](./01.md) blob retrieval.
+This document explains how to format [HLS](https://datatracker.ietf.org/doc/html/rfc8216) (HTTP Live Streaming) videos to be compatible with [BUD-01](../buds/01.md) blob retrieval.
 
 ## Overview
 
@@ -9,7 +9,7 @@ HLS videos consist of multiple files:
 - Variant playlists (`.m3u8`) that reference media segments
 - Media segment files (typically `.ts` files)
 
-Each file MUST be uploaded as a separate blob and referenced by its SHA256 hash using the [BUD-01](./01.md#get-sha256---get-blob) `GET /<sha256>` endpoint format.
+Each file MUST be uploaded as a separate blob and referenced by its SHA256 hash using the [BUD-01](../buds/01.md#get-sha256---get-blob) `GET /<sha256>` endpoint format.
 
 ## Relative Paths
 
@@ -58,7 +58,7 @@ cd2a98d055eef5ec3aca73bd136a40340539138da73144d589d9de5a3a52149a.ts
 
 ## Media Segments
 
-Media segment files (typically `.ts` files) MUST be uploaded as separate blobs. Each segment MUST be retrievable via the [BUD-01](./01.md#get-sha256---get-blob) `GET /<sha256>` endpoint.
+Media segment files (typically `.ts` files) MUST be uploaded as separate blobs. Each segment MUST be retrievable via the [BUD-01](../buds/01.md#get-sha256---get-blob) `GET /<sha256>` endpoint.
 
 The server SHOULD set the `Content-Type` header appropriately:
 - `.ts` files: `video/mp2t` or `video/MP2T`
@@ -68,7 +68,7 @@ The server SHOULD set the `Content-Type` header appropriately:
 
 When generating HLS playlists for Blossom:
 
-1. Upload each media segment as a separate blob using [BUD-02](./02.md#put-upload---upload-blob) `PUT /upload`
+1. Upload each media segment as a separate blob using [BUD-02](../buds/02.md#put-upload---upload-blob) `PUT /upload`
 2. Upload each variant playlist as a separate blob
 3. Upload the master playlist as a separate blob
 4. In all playlists, use relative paths containing only the SHA256 hash (and optional file extension) of the referenced blob
@@ -88,8 +88,8 @@ Example client flow:
 When serving HLS playlists, servers MUST:
 
 1. Return the playlist content with the appropriate `Content-Type` header (`application/vnd.apple.mpegurl` or `application/x-mpegURL`)
-2. Serve playlists via the [BUD-01](./01.md#get-sha256---get-blob) `GET /<sha256>` endpoint
-3. Support optional file extensions (e.g., `/<sha256>.m3u8`) as specified in [BUD-01](./01.md#get-sha256---get-blob)
+2. Serve playlists via the [BUD-01](../buds/01.md#get-sha256---get-blob) `GET /<sha256>` endpoint
+3. Support optional file extensions (e.g., `/<sha256>.m3u8`) as specified in [BUD-01](../buds/01.md#get-sha256---get-blob)
 
 When a client requests a playlist blob, the server MUST return the playlist content as-is, without modifying relative paths. The client is responsible for resolving relative paths to absolute URLs using the current server's base URL.
 

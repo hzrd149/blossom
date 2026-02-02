@@ -26,7 +26,7 @@ If an implementation needs to add access control, it SHOULD restrict access base
 
 ## Blob Retrieval
 
-The server MUST implement the `GET /<sha256>` and `HEAD /<sha256>` endpoints as defined in [BUD-01](./01.md#get-sha256---get-blob):
+The server MUST implement the `GET /<sha256>` and `HEAD /<sha256>` endpoints as defined in [BUD-01](../buds/01.md#get-sha256---get-blob):
 
 1. The server MUST accept optional file extensions in the URL (e.g., `/<sha256>.pdf`)
 2. The server MUST set appropriate `Content-Type` headers or default to `application/octet-stream`
@@ -60,7 +60,7 @@ When the server receives a request with proxy hints and the blob is not in the l
 
 1. The server SHOULD attempt to retrieve the blob from the servers specified in the `xs` parameters
 2. If `xs` hints fail, the server MAY attempt to retrieve the blob using the `as` parameters by:
-   - Fetching the author's [BUD-03](./03.md) server list (`kind:10063`)
+   - Fetching the author's [BUD-03](../buds/03.md) server list (`kind:10063`)
    - Attempting to retrieve the blob from servers in the author's list
 3. If the blob is successfully retrieved, the server SHOULD:
    - Cache the blob locally for future requests
@@ -71,7 +71,7 @@ This proxy functionality allows the local cache server to act as a transparent p
 
 ## CORS Headers
 
-The server MUST set the `Access-Control-Allow-Origin: *` header on all responses to ensure compatibility with web applications, as specified in [BUD-01](./01.md#cross-origin-headers).
+The server MUST set the `Access-Control-Allow-Origin: *` header on all responses to ensure compatibility with web applications, as specified in [BUD-01](../buds/01.md#cross-origin-headers).
 
 ## Use Cases
 
