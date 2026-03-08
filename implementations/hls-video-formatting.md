@@ -5,6 +5,7 @@ This document explains how to format [HLS](https://datatracker.ietf.org/doc/html
 ## Overview
 
 HLS videos consist of multiple files:
+
 - A master playlist (`.m3u8`) that references variant playlists
 - Variant playlists (`.m3u8`) that reference media segments
 - Media segment files (typically `.ts` files)
@@ -61,6 +62,7 @@ cd2a98d055eef5ec3aca73bd136a40340539138da73144d589d9de5a3a52149a.ts
 Media segment files (typically `.ts` files) MUST be uploaded as separate blobs. Each segment MUST be retrievable via the [BUD-01](../buds/01.md#get-sha256---get-blob) `GET /<sha256>` endpoint.
 
 The server SHOULD set the `Content-Type` header appropriately:
+
 - `.ts` files: `video/mp2t` or `video/MP2T`
 - `.m4s` files: `video/iso.segment` or `video/mp4`
 

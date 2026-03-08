@@ -10,4 +10,3 @@ This directory contains possible uses and implementations of the Blossom protoco
 ## Contributions
 
 Contributions are welcome! Documents in this directory MUST be compatible with the existing [BUDs](../buds) and should be focused on a single use case or implementation.
-
