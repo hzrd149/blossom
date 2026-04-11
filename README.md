@@ -30,6 +30,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-11: Nostr Authorization](./buds/11.md)
 - [BUD-12: Blob management endpoints](./buds/12.md)
 - [BUD-13: Path-based blob upload](./buds/13.md)
+- [BUD-14: Path-based multi-part upload](./buds/14.md)
 
 ## Endpoints
 
@@ -38,6 +39,7 @@ Blossom Servers expose a few endpoints for managing blobs
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
 - `PUT /<sha256>` [BUD-13](./buds/13.md#put-sha256---upload-blob)
+- `PATCH /<sha256>` (optional file `.ext`) [BUD-14](./buds/14.md#patch-sha256ext---upload-blob-in-parts)
 - `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements-optional)
 - `GET /list/<pubkey>` [BUD-12](./buds/12.md#get-listpubkey---list-blobs-unrecommended) _(unrecommended)_
 - `DELETE /<sha256>` [BUD-12](./buds/12.md#delete-sha256---delete-blob)
