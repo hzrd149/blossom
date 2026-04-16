@@ -22,7 +22,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-03: User Server List](./buds/03.md)
 - [BUD-04: Mirroring blobs](./buds/04.md)
 - [BUD-05: Media optimization](./buds/05.md)
-- [BUD-06: Upload requirements](./buds/06.md) _(moved to [BUD-02](./buds/02.md#head-upload---upload-requirements-optional))_
+- [BUD-06: Upload requirements](./buds/06.md)
 - [BUD-07: Payment required](./buds/07.md)
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 - [BUD-09: Blob Report](./buds/09.md)
@@ -37,7 +37,7 @@ Blossom Servers expose a few endpoints for managing blobs
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
 - `PUT /upload` [BUD-02](./buds/02.md#put-upload---upload-blob)
-- `HEAD /upload` [BUD-02](./buds/02.md#head-upload---upload-requirements-optional)
+- `HEAD /upload` [BUD-06](./buds/06.md)
 - `GET /list/<pubkey>` [BUD-12](./buds/12.md#get-listpubkey---list-blobs-unrecommended) _(unrecommended)_
 - `DELETE /<sha256>` [BUD-12](./buds/12.md#delete-sha256---delete-blob)
 - `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob)
