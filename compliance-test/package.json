@@ -1,0 +1,15 @@
+{
+  "name": "blossom-compliance-test",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "bun test",
+    "report": "bun run report.ts",
+    "report:single": "BLOSSOM_SERVER_URL=$URL bun run report.ts"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.100",
+    "@scure/base": "^2.2.0",
+    "nostr-tools": "^2.10.4"
+  }
+}
