@@ -52,6 +52,7 @@ Blossom Servers expose a few endpoints for managing blobs
 | ------- | ------------------- | ------------------ |
 | `24242` | Authorization token | [11](./buds/11.md) |
 | `10063` | User Server List    | [03](./buds/03.md) |
+| `30064` | Hashtree Root       | [18](./buds/18.md) |
 
 ## License
 
