@@ -20,7 +20,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-01: Server requirements and blob retrieval](./buds/01.md)
 - [BUD-02: Blob upload and management](./buds/02.md)
 - [BUD-03: User Server List](./buds/03.md)
-- [BUD-04: Mirroring blobs](./buds/04.md)
+- [BUD-04: Mirroring blobs](./buds/04.md) _(unrecommended)_
 - [BUD-05: Media optimization](./buds/05.md)
 - [BUD-06: Upload requirements](./buds/06.md)
 - [BUD-07: Payment required](./buds/07.md)
@@ -29,6 +29,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-10: Blossom URI Schema](./buds/10.md)
 - [BUD-11: Nostr Authorization](./buds/11.md)
 - [BUD-12: Blob management endpoints](./buds/12.md)
+- [BUD-13: Path-based blob upload](./buds/13.md)
 
 ## Endpoints
 
@@ -36,11 +37,11 @@ Blossom Servers expose a few endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
-- `PUT /upload` [BUD-02](./buds/02.md#put-upload---upload-blob)
-- `HEAD /upload` [BUD-06](./buds/06.md)
+- `PUT /<sha256>` [BUD-13](./buds/13.md#put-sha256---upload-blob) _(also supports remote source URLs)_
+- `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements-optional)
 - `GET /list/<pubkey>` [BUD-12](./buds/12.md#get-listpubkey---list-blobs-unrecommended) _(unrecommended)_
 - `DELETE /<sha256>` [BUD-12](./buds/12.md#delete-sha256---delete-blob)
-- `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob)
+- `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob) _(unrecommended)_
 - `HEAD /media` [BUD-05](./buds/05.md#head-media)
 - `PUT /media` [BUD-05](./buds/05.md#put-media)
 - `PUT /report` [BUD-09](./buds/09.md)
