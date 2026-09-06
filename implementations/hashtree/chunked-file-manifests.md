@@ -52,9 +52,9 @@ A reader MUST reject named links, unknown link types, integer overflow, or a chi
 To construct a canonical file representation, a writer MUST:
 
 1. Split the plaintext into consecutive `chunk_size` byte chunks. Every chunk except the final chunk MUST contain exactly `chunk_size` bytes. The final chunk MUST contain between `1` and `chunk_size` bytes. An empty file is represented by one empty chunk.
-2. Store each chunk as a raw blob or encrypt it independently using [Content Hash Key Encryption](./content-hash-key-encryption.md).
+2. Store each chunk as a raw blob or encrypt it independently using a [Hashtree Encryption](./hashtree-encryption.md) suite.
 3. If the file is no larger than `chunk_size` and the surrounding protocol permits a raw blob, the stored chunk is the canonical direct representation and a file node is not required.
-4. When a file node is required, create one type `0` link per chunk in file order. Set `h` to the stored blob hash, `s` to the plaintext chunk length, and `k` to the chunk CHK key when encrypted. An `htree` file root always requires this wrapper, including for a small or empty file.
+4. When a file node is required, create one type `0` link per chunk in file order. Set `h` to the stored blob hash, `s` to the plaintext chunk length, and `k` to the chunk's versioned key when encrypted. An `htree` file root always requires this wrapper, including for a small or empty file.
 5. If there are no more than `max_links`, encode those links as the file root.
 6. Otherwise, partition the links from left to right into the minimum number of consecutive groups, each containing exactly `max_links` links except the final group.
 7. Encode each group as a child file node and replace it with a type `1` link whose `s` is the represented size of that child.
@@ -79,7 +79,7 @@ A client can serve a byte range without assembling the complete file by using `s
 
 ## Encrypted Manifests
 
-Leaf chunks and child file nodes can each be encrypted independently. A parent link carries the key for its encrypted child. If the file root is encrypted, its key is carried by the reference that identifies the root.
+Leaf chunks and child file nodes can each be encrypted independently using any [Hashtree Encryption](./hashtree-encryption.md) suite. A parent link carries the versioned key for its encrypted child. If the file root is encrypted, its key is carried by the reference that identifies the root.
 
 Encrypting only chunks does not hide file size, chunk boundaries, child hashes, or manifest structure. Applications that need to hide that information SHOULD encrypt every manifest layer up to and including the root.
 
@@ -140,7 +140,7 @@ Decoded form:
 ### Normative References
 
 - [Hashtree Manifest Format](./hashtree-manifest-format.md)
-- [Content Hash Key Encryption](./content-hash-key-encryption.md)
+- [Hashtree Encryption](./hashtree-encryption.md)
 
 ### Informative References
 

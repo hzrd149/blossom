@@ -10,16 +10,16 @@ The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **
 
 The documents are ordered by dependency:
 
-1. [Content Hash Key Encryption](./content-hash-key-encryption.md) defines deterministic encryption for content-addressed blobs.
-2. [Hashtree Manifest Format](./hashtree-manifest-format.md) defines the canonical MessagePack node and link encoding shared by all manifests.
-3. [Directory Manifests](./directory-manifests.md) defines named directory entries and path traversal.
-4. [Chunked File Manifests](./chunked-file-manifests.md) defines fixed-size file chunking and recursive file nodes.
-5. [Directory Fanout](./directory-fanout.md) defines scalable, typed index nodes for large directories.
+1. [Hashtree Manifest Format](./hashtree-manifest-format.md) defines the canonical MessagePack node and link encoding shared by all manifests.
+2. [Directory Manifests](./directory-manifests.md) defines named directory entries and path traversal.
+3. [Chunked File Manifests](./chunked-file-manifests.md) defines fixed-size file chunking and recursive file nodes.
+4. [Directory Fanout](./directory-fanout.md) defines scalable, typed index nodes for large directories.
+5. [Hashtree Encryption](./hashtree-encryption.md) defines the optional encryption layer and its suites.
 6. [Hashtree References](./hashtree-references.md) defines mutable and immutable references to objects and paths in a Hashtree.
 
 ## Protocol Model
 
-Blossom servers store every encrypted blob, chunk, and manifest as an ordinary blob addressed by the SHA-256 hash of its stored bytes. Hashtree clients construct, encrypt, fetch, validate, decode, and traverse the tree. No Hashtree-specific server behavior is required.
+A Hashtree is unencrypted by default. Blossom servers store every blob, chunk, and manifest, encrypted or not, as an ordinary blob addressed by the SHA-256 hash of its stored bytes. Hashtree clients construct, optionally encrypt, fetch, validate, decode, and traverse the tree. No Hashtree-specific server behavior is required.
 
 ```text
 htree reference
@@ -41,7 +41,7 @@ This specification set consolidates and revises the following reviewed proposals
 
 | Proposal | Imported revision | Content |
 | --- | --- | --- |
-| [PR #104](https://github.com/hzrd149/blossom/pull/104) | `ef6c7fb4435530556fb32345eec010505bda017a` | Content Hash Key encryption |
+| [PR #104](https://github.com/hzrd149/blossom/pull/104) | `ef6c7fb4435530556fb32345eec010505bda017a` | Content Hash Key encryption, revised into the optional encryption layer |
 | [PR #105](https://github.com/hzrd149/blossom/pull/105) | `1b2f140b0d3fd06a907b159d7628e1d007588da3` | MessagePack directory manifests |
 | [PR #106](https://github.com/hzrd149/blossom/pull/106) | `1848f77c4a25b70d10a3963d66ba1c8aba1e4f2c` | Chunked files and directory fanout |
 | [PR #107](https://github.com/hzrd149/blossom/pull/107) | `018f3e32227cf8fd1fba8dff2d39d6e3370d2d52` | Hashtree references |

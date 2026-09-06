@@ -14,8 +14,8 @@ Normative key words are interpreted as described in [BCP 14](https://www.rfc-edi
 
 - **mutable reference**: A reference resolved through the latest valid Nostr root event for an author and tree name.
 - **immutable reference**: A reference containing a specific root manifest hash.
-- **root key**: The CHK key used to decrypt an encrypted root manifest.
-- **link key**: A random key used to share access to a link-private mutable root.
+- **root key**: The 33-byte versioned key used to decrypt an encrypted root manifest.
+- **link key**: A uniformly random 33-byte key used to share access to a link-private mutable root.
 - **tree path**: Zero or more directory entry names below the root.
 
 ## Reference Forms
@@ -83,7 +83,7 @@ An unencrypted public root has no key-management tags. An encrypted public root 
 ["key", <root-key-hex>]
 ```
 
-`root-key-hex` is the 32-byte root CHK key encoded as 64 lowercase hexadecimal characters. The key is public to everyone who can read the event.
+`root-key-hex` is the 33-byte versioned root key encoded as 66 lowercase hexadecimal characters. The key is public to everyone who can read the event.
 
 #### Link-Private Root
 
@@ -94,16 +94,16 @@ A link-private root has exactly one of each:
 ["keyId", <key-id-hex>]
 ```
 
-The writer generates a uniformly random 32-byte `link_key` and computes:
+The writer generates a uniformly random 33-byte `link_key` and computes:
 
 ```text
 wrapped_root_key = root_key XOR link_key
 key_id = first_8_bytes(SHA-256(link_key))
 ```
 
-Both values are lowercase hexadecimal. `wrapped-root-key-hex` is 64 characters and `key-id-hex` is 16 characters.
+Both values are lowercase hexadecimal. `wrapped-root-key-hex` is 66 characters and `key-id-hex` is 16 characters.
 
-The mutable URI carries the link key as `k=<link-key-hex>`. A client MUST verify `keyId`, recover `root_key`, and then validate that key by decrypting the root according to [Content Hash Key Encryption](./content-hash-key-encryption.md).
+The mutable URI carries the link key as `k=<link-key-hex>`. A client MUST verify `keyId`, recover `root_key`, and then validate that key by decrypting the root according to the suite identified by its versioned key.
 
 A link-private event MAY include one `selfEncryptedKey` or one `selfEncryptedLinkKey` recovery tag as defined below. It MUST NOT include a public `key` tag.
 
@@ -115,15 +115,15 @@ An owner-private root has exactly one `selfEncryptedKey` tag and no public or li
 ["selfEncryptedKey", <nip44-payload>]
 ```
 
-The payload is the lowercase hexadecimal root key encrypted as a NIP-44 version 2 string from the event author to the same event author.
+The payload is the lowercase hexadecimal versioned root key encrypted as a NIP-44 version 2 string from the event author to the same event author.
 
-For link-private recovery, `selfEncryptedKey` encrypts the root key and `selfEncryptedLinkKey` encrypts the link key using the same self-to-self NIP-44 procedure. An event MUST NOT contain both recovery tags.
+For link-private recovery, `selfEncryptedKey` encrypts the 66 hexadecimal characters of the root key and `selfEncryptedLinkKey` encrypts the 66 hexadecimal characters of the link key using the same self-to-self NIP-44 procedure. An event MUST NOT contain both recovery tags.
 
 Clients MUST verify the containing event before NIP-44 decryption.
 
 ### Mutable URI Secret
 
-Only the `k` query parameter is defined by this document. A URI MUST contain no more than one `k` parameter. Its value MUST be 64 lowercase hexadecimal characters and is valid only for a link-private root. A client MUST reject duplicate `k` parameters. Unknown query parameters MAY be retained by applications but MUST NOT affect Hashtree root or path resolution.
+Only the `k` query parameter is defined by this document. A URI MUST contain no more than one `k` parameter. Its value MUST be the 33-byte link key encoded as 66 lowercase hexadecimal characters and is valid only for a link-private root. A client MUST reject duplicate `k` parameters. Unknown query parameters MAY be retained by applications but MUST NOT affect Hashtree root or path resolution.
 
 The `k` parameter is a bearer secret. Clients MUST remove it before making Blossom HTTP requests.
 
@@ -142,7 +142,7 @@ Defined records are:
 | Type | Length | Cardinality | Meaning |
 | --- | --- | --- | --- |
 | `0` | `32` | exactly one | Root manifest hash |
-| `5` | `32` | zero or one | Root CHK key |
+| `5` | `33` | zero or one | Root versioned key |
 
 Type `0` follows the NIP-19 convention that type `0` contains the identifier's primary value. Type `5` is local to `nhash`; it does not assign a meaning to type `5` in other NIP-19 identifiers.
 
@@ -159,7 +159,7 @@ To resolve an `htree` reference, a client MUST:
 1. Resolve the root hash and optional root key from the mutable event or immutable identifier.
 2. Fetch the root manifest as an ordinary Blossom blob.
 3. Verify the fetched bytes against the root hash.
-4. Decrypt the root locally when a root key is present.
+4. Decrypt the root locally according to its suite when a root key is present.
 5. Decode and validate the root as node type `1`, `2`, or `3`.
 6. If the path is non-empty, require a directory root of type `2` or `3` and traverse each segment using the directory and fanout specifications.
 7. Decrypt and validate linked objects as required by their links.
@@ -186,13 +186,13 @@ Mutable references can change whenever the author publishes a newer valid root e
 
 Root keys, link keys, `nhash` values containing keys, and mutable URIs containing `k` are bearer secrets. Applications SHOULD prevent their disclosure through logs, browser history, analytics, referrer headers, clipboard monitoring, and shared screenshots.
 
-The 8-byte key ID permits false matches with probability approximately `2^-64`; it is only an early key check. Successful authenticated root decryption and CHK validation remain REQUIRED.
+The 8-byte key ID permits false matches with probability approximately `2^-64`; it is only an early key check. Successful authenticated decryption according to the key's suite remains REQUIRED.
 
 Nostr events reveal the author, tree name, update time, visibility mode, and root hash even when the root manifest is encrypted. Applications requiring metadata privacy need an additional publication mechanism outside this specification.
 
 Clients SHOULD limit manifest size, recursion depth, relay responses, total events examined, total links, and total bytes fetched.
 
-## Test Vector
+## Test Vectors
 
 ### `nhash` Without Key
 
@@ -200,6 +200,17 @@ Clients SHOULD limit manifest size, recursion depth, relay responses, total even
 root_hash: abababababababababababababababababababababababababababababababab
 payload: 0020abababababababababababababababababababababababababababababababab
 nhash: nhash1qqs2h2at4w46h2at4w46h2at4w46h2at4w46h2at4w46h2at4w46h2cym3cqn
+```
+
+### `nhash` With Versioned Key
+
+The key record carries the `chk-v1` versioned key for plaintext `hello`:
+
+```text
+root_hash: abababababababababababababababababababababababababababababababab
+versioned_key: 012cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824
+payload: 0020abababababababababababababababababababababababababababababababab0521012cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824
+nhash: nhash1qqs2h2at4w46h2at4w46h2at4w46h2at4w46h2at4w46h2at4w46h2c9yyqjeujdhf0mpgcwym5rk2k9h83fuxckrewplf6zteesgvmzjw9esfq6j44kc
 ```
 
 ## References
@@ -214,7 +225,7 @@ nhash: nhash1qqs2h2at4w46h2at4w46h2at4w46h2at4w46h2at4w46h2at4w46h2cym3cqn
 - [Directory Manifests](./directory-manifests.md)
 - [Chunked File Manifests](./chunked-file-manifests.md)
 - [Directory Fanout](./directory-fanout.md)
-- [Content Hash Key Encryption](./content-hash-key-encryption.md)
+- [Hashtree Encryption](./hashtree-encryption.md)
 
 ### Informative References
 

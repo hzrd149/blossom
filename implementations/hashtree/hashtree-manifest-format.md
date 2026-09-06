@@ -46,7 +46,7 @@ Each member of `l` is a MessagePack map. The complete link field vocabulary is:
 | Key | Type | Required | Meaning |
 | --- | --- | --- | --- |
 | `h` | binary | yes | 32-byte SHA-256 hash of the stored linked object |
-| `k` | binary | no | 32-byte client-side decryption key |
+| `k` | binary | no | 33-byte versioned decryption key |
 | `m` | map | no | Canonically encoded metadata |
 | `n` | string | context-dependent | User-visible directory entry name |
 | `s` | unsigned integer | yes | Plaintext bytes represented by this link |
@@ -60,7 +60,7 @@ The link type MUST equal the node type of the manifest identified by `h`. Link t
 
 The `s` value MUST be between `0` and `2^64 - 1`, inclusive. Specifications that require a positive value state that requirement separately. Implementations MUST detect overflow when adding descendant sizes.
 
-When `k` is present, it is a bearer secret used only by the client. A client MUST NOT send it to a Blossom server. The encryption algorithm is selected by the enclosing protocol context; this specification set uses [Content Hash Key Encryption](./content-hash-key-encryption.md).
+When `k` is present, it is the 33-byte versioned key defined by [Hashtree Encryption](./hashtree-encryption.md). Its suite byte identifies how the linked bytes are encrypted. A versioned key is a bearer secret used only by the client, and a client MUST NOT send it to a Blossom server.
 
 ## Canonical MessagePack Profile
 
@@ -74,7 +74,7 @@ Writers MUST apply all of these rules:
 6. Encode strings as valid UTF-8 using MessagePack string types.
 7. Encode metadata according to the recursive rules below.
 
-Readers MUST reject malformed MessagePack, duplicate map keys, trailing bytes after the root object, values of the wrong type, and values outside the ranges defined by the applicable specification.
+Readers MUST reject malformed MessagePack, duplicate map keys, trailing bytes after the root object, values of the wrong type or length, and values outside the ranges defined by the applicable specification.
 
 ### Canonical Metadata
 
@@ -102,7 +102,7 @@ The canonical MessagePack bytes are the manifest plaintext:
 manifest_plaintext = canonical_manifest_msgpack
 ```
 
-For an unencrypted manifest, the stored bytes equal the manifest plaintext and its Blossom address is `SHA-256(manifest_plaintext)`. For an encrypted manifest, the stored bytes are the ciphertext defined by [Content Hash Key Encryption](./content-hash-key-encryption.md), and its Blossom address is `SHA-256(ciphertext)`.
+For an unencrypted manifest, the stored bytes equal the manifest plaintext and its Blossom address is `SHA-256(manifest_plaintext)`. For an encrypted manifest, the stored bytes are produced by a [Hashtree Encryption](./hashtree-encryption.md) suite, and its Blossom address is `SHA-256(stored_bytes)`.
 
 The `h` field always identifies the bytes stored by Blossom, whether those bytes are plaintext or ciphertext. A client fetching a manifest MUST verify the stored bytes against `h` before decrypting or decoding them.
 
@@ -131,6 +131,7 @@ Hashes authenticate stored bytes, not the trustworthiness of their contents. A v
 
 - [MessagePack Specification](https://github.com/msgpack/msgpack/blob/master/spec.md)
 - [FIPS 180-4: Secure Hash Standard](https://doi.org/10.6028/NIST.FIPS.180-4)
+- [Hashtree Encryption](./hashtree-encryption.md)
 
 ### Informative References
 

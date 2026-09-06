@@ -96,7 +96,7 @@ Bounds are untrusted routing hints until the child is fetched and validated. A c
 
 A reader MUST reject named fanout links, empty fanout nodes, invalid or overlapping bounds, zero counts, unsupported child types, summary mismatches, duplicate flattened names, and unsorted flattened output.
 
-As with terminal directories, an unencrypted fanout reveals names, sizes, topology, hashes, metadata, and embedded child keys. Applications SHOULD encrypt manifest layers when this information is sensitive.
+As with terminal directories, an unencrypted fanout reveals names, sizes, topology, hashes, metadata, and embedded child keys. Applications SHOULD encrypt manifest layers using a [Hashtree Encryption](./hashtree-encryption.md) suite when this information is sensitive.
 
 ## Test Vector
 
@@ -154,6 +154,7 @@ Decoded form:
 
 - [Hashtree Manifest Format](./hashtree-manifest-format.md)
 - [Directory Manifests](./directory-manifests.md)
+- [Hashtree Encryption](./hashtree-encryption.md)
 
 ### Informative References
 

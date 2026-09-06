@@ -98,7 +98,7 @@ blossom:16121fa792b3afc72ec8bfc1dc85060518b6adba1429973ecc12891165cbe67e.bdir?xs
 
 ## Security Considerations
 
-An unencrypted directory reveals names, sizes, metadata, child hashes, and any embedded decryption keys. Clients that need to hide this information SHOULD encrypt the encoded directory manifest using [Content Hash Key Encryption](./content-hash-key-encryption.md).
+An unencrypted directory reveals names, sizes, metadata, child hashes, and any embedded decryption keys. Clients that need to hide this information SHOULD encrypt the encoded directory manifest using a [Hashtree Encryption](./hashtree-encryption.md) suite.
 
 Before displaying or materializing a directory, clients MUST validate every name and reject duplicates. Filesystem writers MUST additionally enforce platform-specific path and reserved-name rules and MUST ensure the destination remains beneath the intended output directory.
 
@@ -154,6 +154,7 @@ Decoded form:
 - [Hashtree Manifest Format](./hashtree-manifest-format.md)
 - [Chunked File Manifests](./chunked-file-manifests.md)
 - [Directory Fanout](./directory-fanout.md)
+- [Hashtree Encryption](./hashtree-encryption.md)
 
 ### Informative References
 
