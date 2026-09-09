@@ -48,6 +48,8 @@ This specification set consolidates and revises the following reviewed proposals
 
 The old draft compatibility forms from those proposals are intentionally excluded. This specification set defines only typed directory fanout nodes, Nostr kind `30064` mutable roots, and TLV-encoded `nhash` identifiers.
 
+[Changes from the Source Proposals](./changes-from-source-proposals.md) summarizes how this specification set differs from those revisions, including the changes that break compatibility with implementations built against them.
+
 ## Identifier Status
 
 The `htree` URI scheme, `nhash` human-readable prefix, media types, and Nostr kind `30064` are experimental assignments. Implementations MUST NOT assume that they are registered by IANA or the Nostr protocol registry.
