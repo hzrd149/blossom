@@ -37,7 +37,8 @@ Blossom Servers expose a few endpoints for managing blobs
 
 - `GET /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#get-sha256---get-blob)
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
-- `PUT /<sha256>` [BUD-13](./buds/13.md#put-sha256---upload-blob) _(also supports remote source URLs)_
+- `PUT /<sha256>` [BUD-13](./buds/13.md#put-sha256---upload-blob)
+- `POST /<sha256>` [BUD-13](./buds/13.md#post-sha256---mirror-blob) _(optional mirroring)_
 - `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements-optional)
 - `GET /list/<pubkey>` [BUD-12](./buds/12.md#get-listpubkey---list-blobs-unrecommended) _(unrecommended)_
 - `DELETE /<sha256>` [BUD-12](./buds/12.md#delete-sha256---delete-blob)
