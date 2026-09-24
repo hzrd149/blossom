@@ -74,7 +74,7 @@ Writers MUST apply all of these rules:
 6. Encode strings as valid UTF-8 using MessagePack string types.
 7. Encode metadata according to the recursive rules below.
 
-Readers MUST reject malformed MessagePack, duplicate map keys, trailing bytes after the root object, values of the wrong type or length, and values outside the ranges defined by the applicable specification.
+Readers MUST reject malformed MessagePack, duplicate map keys, trailing bytes after the root object, fields of the wrong structural type or fixed byte length, and values outside the semantic ranges defined by the applicable specification.
 
 ### Canonical Metadata
 
@@ -82,7 +82,7 @@ Metadata is optional and does not alter the interpretation of fields outside `m`
 
 Metadata values are limited to the JSON data model: null, boolean, number, string, array, and map. Binary values and MessagePack extension values MUST NOT appear in metadata.
 
-Metadata MUST be encoded recursively as follows:
+Writers MUST encode metadata recursively as follows:
 
 1. Every map key MUST be a valid UTF-8 string.
 2. Map entries MUST be sorted by ascending bytewise order of each key's UTF-8 encoding.
@@ -92,7 +92,21 @@ Metadata MUST be encoded recursively as follows:
 6. Negative zero MUST be encoded as integer zero.
 7. Strings, arrays, and maps MUST use the shortest applicable length header.
 
-A reader MUST reject metadata that does not conform to this profile, even when it does not recognize the metadata keys. This prevents multiple encodings of the same accepted manifest.
+A reader MUST recursively validate metadata and reject non-string map keys, invalid UTF-8, binary values, MessagePack extension values, non-finite numbers, and any other value outside the metadata data model. These requirements apply even when the reader does not recognize a metadata key.
+
+A reader MUST accept otherwise valid metadata without requiring its wire encoding to be canonical. In particular, a reader MUST NOT reject metadata solely because map entries are unsorted, an integer uses a noncanonical signedness or width, a collection or string uses a wider length header than necessary, a finite number uses float32, an integral value is encoded as a float, or negative zero is encoded as a float. These representations are noncanonical and MUST NOT be emitted by a conforming writer.
+
+Canonical and noncanonical encodings remain different content-addressed objects. A reader MUST verify the hash of the original stored bytes and MUST NOT decode and re-encode a manifest before hash verification. Re-encoding an accepted noncanonical manifest with a conforming writer can change that manifest's bytes, its hash, and every ancestor hash that refers to it.
+
+For example, the following are valid encodings of equivalent metadata values. A conforming writer emits only the canonical form, while a reader accepts both:
+
+```text
+value:        {"a": 1, "b": 2}
+canonical:    82a16101a16202
+noncanonical: de0002a162cc02a161cc01
+```
+
+The noncanonical form uses a `map16` header instead of `fixmap`, reverses the key order, and encodes the values as `uint8` instead of positive fixint.
 
 ## Storage and Retrieval
 

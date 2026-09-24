@@ -6,7 +6,7 @@ How this specification set differs from the four proposals it consolidates ([#10
 
 **Encryption is now optional.** The proposals defined `chk-v1` as the encryption format. [Hashtree Encryption](./hashtree-encryption.md) makes encryption an optional layer with a suite registry: `01` `chk-v1` (algorithm unchanged) and `02` `rnd-v1` (random key and nonce, no equality leakage). A 33-byte versioned key, `suite_byte || key`, carries the suite with the key, so there is no negotiation.
 
-**The MessagePack encoding got its own document.** [Hashtree Manifest Format](./hashtree-manifest-format.md) owns the node registry, the closed link vocabulary, and a canonical encoding profile — including canonical rules for `m` metadata, which the proposals omitted. Without those, two encoders can produce different hashes for the same manifest.
+**The MessagePack encoding got its own document.** [Hashtree Manifest Format](./hashtree-manifest-format.md) owns the node registry, the closed link vocabulary, and a canonical writer profile — including canonical construction rules for `m` metadata, which the proposals omitted. Without those rules, two writers can produce different hashes for the same logical manifest. Readers still accept semantically valid metadata encoded by older or noncanonical writers; its original stored bytes remain its content-addressed identity.
 
 **Legacy read-paths removed.** `_chunk_<n>` name-based fanout, Nostr kind `30078` roots, and bare-32-byte `nhash` payloads. A name like `_chunk_0` now has no special meaning and is listed verbatim.
 
