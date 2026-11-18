@@ -68,7 +68,7 @@ The server SHOULD set the `Content-Type` header appropriately:
 
 When generating HLS playlists for Blossom:
 
-1. Upload each media segment as a separate blob using [BUD-02](../buds/02.md#put-upload---upload-blob) `PUT /upload`
+1. Upload each media segment as a separate blob using [BUD-13](../buds/13.md#put-sha256---upload-blob) `PUT /<sha256>`
 2. Upload each variant playlist as a separate blob
 3. Upload the master playlist as a separate blob
 4. In all playlists, use relative paths containing only the SHA256 hash (and optional file extension) of the referenced blob
