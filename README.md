@@ -22,7 +22,7 @@ BUDs or **Blossom Upgrade Documents** are short documents that outline an additi
 - [BUD-03: User Server List](./buds/03.md)
 - [BUD-04: Mirroring blobs](./buds/04.md) _(unrecommended)_
 - [BUD-05: Media optimization](./buds/05.md)
-- [BUD-06: Upload requirements](./buds/06.md)
+- [BUD-06: Upload requirements](./buds/06.md) _(unrecommended)_
 - [BUD-07: Payment required](./buds/07.md)
 - [BUD-08: Nostr File Metadata Tags](./buds/08.md)
 - [BUD-09: Blob Report](./buds/09.md)
@@ -39,11 +39,13 @@ Blossom Servers expose a few endpoints for managing blobs
 - `HEAD /<sha256>` (optional file `.ext`) [BUD-01](./buds/01.md#head-sha256---has-blob)
 - `PUT /<sha256>` [BUD-13](./buds/13.md#put-sha256---upload-blob)
 - `POST /<sha256>` [BUD-13](./buds/13.md#post-sha256---mirror-blob) _(optional mirroring)_
-- `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements-optional)
+- `QUERY /<sha256>` [BUD-13](./buds/13.md#query-sha256---check-upload-acceptance-optional) _(optional upload check)_
+- `HEAD /upload` [BUD-06](./buds/06.md#head-upload---upload-requirements-optional) _(unrecommended)_
 - `GET /list/<pubkey>` [BUD-12](./buds/12.md#get-listpubkey---list-blobs-unrecommended) _(unrecommended)_
 - `DELETE /<sha256>` [BUD-12](./buds/12.md#delete-sha256---delete-blob)
 - `PUT /mirror` [BUD-04](./buds/04.md#put-mirror---mirror-blob) _(unrecommended)_
-- `HEAD /media` [BUD-05](./buds/05.md#head-media)
+- `QUERY /media` [BUD-05](./buds/05.md#query-media---check-media-acceptance-optional) _(optional media check)_
+- `HEAD /media` [BUD-05](./buds/05.md#head-media-unrecommended) _(unrecommended)_
 - `PUT /media` [BUD-05](./buds/05.md#put-media)
 - `PUT /report` [BUD-09](./buds/09.md)
 
